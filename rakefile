@@ -1,0 +1,48 @@
+require 'yaml'
+
+task :get_cateories_tags do
+  files=Dir["_posts/*.md"]
+  files.each do |file|
+    file_info = YAML.load_file(file)
+    @categories.concat(file_info['categories']) if file_info['categories']
+    @tags.concat(file_info['tags']) if file_info['tags']
+  end
+  @categories = @categories.uniq()
+  @tags = @tags.uniq()
+end
+
+task :new_post do
+  # fetch the existed cateories and tags
+  @categories = Array.new()
+  @tags = Array.new()
+  Rake::Task['get_cateories_tags'].execute
+  # collect the information
+	puts "Input Article Title(for Article)："
+	@name = STDIN.gets.chomp
+	puts "Input Article Categories(#{@categories} Separated By Spaces)："
+	@input_categories = STDIN.gets.chomp
+  puts "Input Article Tags(#{@tags} Separated By ,)"
+  @input_tags = STDIN.gets.chomp
+  # generate information
+  @slug = "#{@name}"
+  puts @slug
+	@slug = @slug.downcase.strip.gsub(' ', '-')
+  puts @slug
+	@date = Time.now.strftime("%F")
+  @post_name = "_posts/#{@date}-#{@slug}.md"
+  puts @post_name
+  # create the new post file
+  if File.exist?(@post_name)
+	   abort("Failed to create the file name already exists !")
+	end
+	FileUtils.touch(@post_name)
+  # insert the header content
+  open(@post_name, 'a') do |file|
+	  file.puts "---"
+		file.puts "title: #{@name}"
+		file.puts "categories: #{@input_categories}"
+    file.puts "tags: #{@input_tags}"
+    file.puts "date: #{Time.now}"
+    file.puts "---"
+	end
+end
