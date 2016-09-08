@@ -25,12 +25,9 @@ task :new_post do
   @input_tags = STDIN.gets.chomp
   # generate information
   @slug = "#{@name}"
-  puts @slug
 	@slug = @slug.downcase.strip.gsub(' ', '-')
-  puts @slug
 	@date = Time.now.strftime("%F")
   @post_name = "_posts/#{@date}-#{@slug}.md"
-  puts @post_name
   # create the new post file
   if File.exist?(@post_name)
 	   abort("Failed to create the file name already exists !")
@@ -43,6 +40,49 @@ task :new_post do
 		file.puts "categories: #{@input_categories}"
     file.puts "tags: #{@input_tags}"
     file.puts "date: #{Time.now}"
+    file.puts "---"
+	end
+end
+
+# task to get permalink from existed docs
+# this task can only be executed from other task which defined @doc_permalinks
+task :get_doc_permalinks do
+  files=Dir["_docs/*.md"]
+  files.each do |file|
+    file_info = YAML.load_file(file)
+    @doc_permalinks.insert(-1,file_info['permalink']) if file_info['permalink']
+  end
+  @doc_permalinks = @doc_permalinks.uniq()
+end
+
+# task for create a Document
+task :new_doc do
+  # fetch permalink from existed docs
+  @doc_permalinks = Array.new()
+  Rake::Task['get_doc_permalinks'].execute
+  # collect the information
+  puts "Input Document Title(for Document)："
+	@title = STDIN.gets.chomp
+  puts "Input Document Permalink(#{@doc_permalinks})："
+	@permalink = STDIN.gets.chomp
+  puts "Input Document excerpt："
+  @excerpt = STDIN.gets.chomp
+  # generate information
+  @slug = "#{@title}"
+	@slug = @slug.downcase.strip.gsub(' ', '-')
+  @doc_name = "_docs/#{@slug}.md"
+  # create the new doc file
+  if File.exist?(@doc_name)
+	   abort("Failed to create the file name already exists !")
+	end
+	FileUtils.touch(@doc_name)
+  # insert the header content
+  open(@doc_name, 'a') do |file|
+	  file.puts "---"
+		file.puts "title: #{@title}"
+		file.puts "permalink: #{@permalink}"
+    file.puts "excerpt: #{@excerpt}"
+    file.puts "created: #{Time.now}"
     file.puts "---"
 	end
 end
