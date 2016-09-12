@@ -9,7 +9,7 @@ created: 2016-09-11 16:18:29 +0200
 SNE是一种非线性数据降维方法，对高维数据降维到2维或者3维有助于将数据用图像的方式展示出来. 在以前,说到数据降维,我一般直接的考虑就是PCA(主成分分析), PCA是高维数据到低维数据的线性映射, 还有一些方法如LLE(Locally Linear Embedding).  
 
 下面是在scikit-learn上面的一个比较各种方法的例子  
-![manifold comparision]({{ site.url}}/doc_images/machine learning/sne-nonlinear-dimensionality-reduction-introduction-01.png)
+![manifold comparision]({{ site.url}}/doc-images/machine-learning/sne-nonlinear-dimensionality-reduction-introduction-01.PNG)
 
 可以看出在上面这个3维转2维的过程中  
 
@@ -39,7 +39,7 @@ $$d^2_{i,j} = \frac{||x_i - x_j||^2} {2\sigma^2_i}$$
 
 1. 离散概率分布的复杂度定义为$2^{H(p)}$, 如果p为K个选择的均匀分布则其熵$H(p)$为$-\sum_xp(x)log_2p(x)$, 复杂度perplexity为K  
 2. 再举个Wiki上的例子如果一个离散的2选1,如果概率分布为均匀分布即(0.5,0.5)那么复杂度为2, 如果概率分布为(0.9,0.1), 则根据定义复杂度perplexity为$2^{(-0.9*log_2{0.9}-0.1*log_2{0.1})}$,结果为1.38, 下面是wiki上高斯分布的截图.   
-![Gaussian Distribution]({{ site.url}}/doc_images/machine learning/sne-nonlinear-dimensionality-reduction-introduction-02.png)
+![Gaussian Distribution]({{ site.url}}/doc-images/machine-learning/sne-nonlinear-dimensionality-reduction-introduction-02.PNG)
 3. 可以看出但$\sigma$增大时,相对较远一点的点如B点作为相邻点的概率会增大,而即使非常相邻的点如A点其概率反而会变小一些,这样复杂度perplexity会变大,反之如果固定复杂度,则高斯分布的中心点如果处于数据密集区则相应要调小$\sigma$
 
 ### 低维空间的点与点相邻的概率分布q
