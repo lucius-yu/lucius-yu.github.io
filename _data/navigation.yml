@@ -22,7 +22,7 @@ foo:
 # main links links
 main:
   - title: "机器学习"
-    url: /docs/machine learning/SNE/
+    url: /docs/machine learning/EM/
 
   - title: "技术博客"
     url: /technical posts/
@@ -35,6 +35,10 @@ main:
     
 # documentation links
 docs:
+  - title: 基本算法
+    children:
+      - title: "EM算法简介"
+        url: /docs/machine learning/EM/ 
   - title: 数据处理
     children:
       - title: "SNE非线性降维"
