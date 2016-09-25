@@ -79,7 +79,7 @@ $=  \sum_i^m{\sum_z q_i(z_i)}log(p(x_i \vert \theta)) +  \sum_i^m{\sum_z q_i(z_i
 
 Gibbs 不等式如下
 
-$$ -\sum_{i=1}^n p_i log(p_i) <= -\sum_{i=1}^n p_i log(q_i) $$
+$$ \sum_{i=1}^n p_i log(p_i) >= \sum_{i=1}^n p_i log(q_i) $$
 
 简而言之, 对任何概率分布p其信息熵小于等于p与另一个概率分布q的交叉熵. 其中等号在q于p相同时成立
 该不等式证明相当简单, 只需要用到$log(x)<=x-1$, 见[Wiki Gibbs不等式](https://en.wikipedia.org/wiki/Gibbs%27_inequality)
