@@ -77,7 +77,8 @@ $=  \sum_i^m{\sum_z q_i(z_i)}log(p(x_i \vert \theta)) +  \sum_i^m{\sum_z q_i(z_i
 
 从上一步的推导中,我们将待优化函数改为优化其下界函数,该下界函数有分解成两部分. 其中第二个部分中$\sum_z q_i(z_i)log(\frac{p(z_i \vert x_i,\theta)}{q_i(z_i)})$ 根据Gibbs不等式,其值小于等于0.
 
-Gibbs 不等式如下:    
+Gibbs 不等式如下
+
 $$ -\sum_{i=1}^n p_i log(p_i) <= -\sum_{i=1}^n p_i log(q_i) $$
 
 简而言之, 对任何概率分布p其信息熵小于等于p与另一个概率分布q的交叉熵. 其中等号在q于p相同时成立

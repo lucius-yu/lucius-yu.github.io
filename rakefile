@@ -4,8 +4,8 @@ task :get_cateories_tags do
   files=Dir["_posts/*.md"]
   files.each do |file|
     file_info = YAML.load_file(file)
-    @categories.concat(file_info['categories']) if file_info['categories']
-    @tags.concat(file_info['tags']) if file_info['tags']
+    @categories.insert(-1,file_info['categories']) if file_info['categories']
+    @tags.insert(-1,file_info['tags']) if file_info['tags']
   end
   @categories = @categories.uniq()
   @tags = @tags.uniq()
@@ -17,31 +17,31 @@ task :new_post do
   @tags = Array.new()
   Rake::Task['get_cateories_tags'].execute
   # collect the information
-	puts "Input Article Title(for Article)："
-	@name = STDIN.gets.chomp
-	puts "Input Article Categories(#{@categories} Separated By Spaces)："
-	@input_categories = STDIN.gets.chomp
+  puts "Input Article Title(for Article)："
+  @name = STDIN.gets.chomp
+  puts "Input Article Categories(#{@categories} Separated By Spaces)："
+  @input_categories = STDIN.gets.chomp
   puts "Input Article Tags(#{@tags} Separated By ,)"
   @input_tags = STDIN.gets.chomp
   # generate information
   @slug = "#{@name}"
-	@slug = @slug.downcase.strip.gsub(' ', '-')
-	@date = Time.now.strftime("%F")
+  @slug = @slug.downcase.strip.gsub(' ', '-')
+  @date = Time.now.strftime("%F")
   @post_name = "_posts/#{@date}-#{@slug}.md"
   # create the new post file
   if File.exist?(@post_name)
-	   abort("Failed to create the file name already exists !")
-	end
-	FileUtils.touch(@post_name)
+     abort("Failed to create the file name already exists !")
+  end
+  FileUtils.touch(@post_name)
   # insert the header content
   open(@post_name, 'a') do |file|
-	  file.puts "---"
-		file.puts "title: #{@name}"
-		file.puts "categories: #{@input_categories}"
+    file.puts "---"
+    file.puts "title: #{@name}"
+    file.puts "categories: #{@input_categories}"
     file.puts "tags: #{@input_tags}"
     file.puts "date: #{Time.now}"
     file.puts "---"
-	end
+  end
 end
 
 # task to get permalink from existed docs
@@ -62,27 +62,27 @@ task :new_doc do
   Rake::Task['get_doc_permalinks'].execute
   # collect the information
   puts "Input Document Title(for Document)："
-	@title = STDIN.gets.chomp
+  @title = STDIN.gets.chomp
   puts "Input Document Permalink(#{@doc_permalinks})："
-	@permalink = STDIN.gets.chomp
+  @permalink = STDIN.gets.chomp
   puts "Input Document excerpt："
   @excerpt = STDIN.gets.chomp
   # generate information
   @slug = "#{@title}"
-	@slug = @slug.downcase.strip.gsub(' ', '-')
+  @slug = @slug.downcase.strip.gsub(' ', '-')
   @doc_name = "_docs/#{@slug}.md"
   # create the new doc file
   if File.exist?(@doc_name)
-	   abort("Failed to create the file name already exists !")
-	end
-	FileUtils.touch(@doc_name)
+    abort("Failed to create the file name already exists !")
+  end
+  FileUtils.touch(@doc_name)
   # insert the header content
   open(@doc_name, 'a') do |file|
-	  file.puts "---"
-		file.puts "title: #{@title}"
-		file.puts "permalink: #{@permalink}"
+    file.puts "---"
+    file.puts "title: #{@title}"
+    file.puts "permalink: #{@permalink}"
     file.puts "excerpt: #{@excerpt}"
     file.puts "created: #{Time.now}"
     file.puts "---"
-	end
+  end
 end
