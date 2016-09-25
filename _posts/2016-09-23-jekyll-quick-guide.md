@@ -132,7 +132,7 @@ bundle exec jekyll serve --config _config.yml _config.dev.yml
 
 1. 修改标题等
 直接编辑_config.yml文件，设置title为'鱼头的技术小站'
-设定baseurl和url,下面是例子
+设定baseurl和url,下面是例子  
 ```markdown
 title                    : "鱼头的技术小站"
 title_separator          : "-"
@@ -149,7 +149,7 @@ baseurl                  : "/try_template_mm" # the subpath of your site, e.g. "
 头像的图片放在_image目录下，同时更改_config.yml设置你的个人介绍和个人头像的图片
 
 4. 去除广告
-广告设置在_layout/目录下的default.html中,直接注释掉就好了
+广告设置在_layout/目录下的default.html中,直接注释掉就好了  
 ```yaml
 <!-- Remove google ads
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -158,7 +158,7 @@ baseurl                  : "/try_template_mm" # the subpath of your site, e.g. "
 
 4. 修改主页
 主页的设定页面在_pages目录下的home.md
-修改主页时如果只是想注释掉某些部分，在Jekyll使用的Liquid语言上注释是
+修改主页时如果只是想注释掉某些部分，在Jekyll使用的Liquid语言上注释是  
 ```liquid
 {% comment %}
 ...
