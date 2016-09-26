@@ -1,7 +1,7 @@
 ---
 layout: archive
 permalink: /technical posts/
-title: "Posts by Category"
+title: "技术博客"
 author_profile: true
 ---
 
@@ -11,7 +11,7 @@ author_profile: true
 {% for category in group_names %}
   {% if category == "technical posts" %}
     {% assign posts = group_items[forloop.index0] %}
-    <h2 id="{{ category | slugify }}" class="archive__subtitle">{{ category }}</h2>
+    <h2 id="{{ category | slugify }}" class="archive__subtitle">{{ 技术博客 }}</h2>
     {% for post in posts %}
       {% include archive-single.html %}
     {% endfor %}
