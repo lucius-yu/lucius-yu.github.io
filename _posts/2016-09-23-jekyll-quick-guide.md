@@ -21,7 +21,7 @@ sudo apt-get install zlib
 
 ### 安装Jekyll  
 
-```bash
+```
 sudo gem install bundler  
 sudo gem install jekyll --no-rdoc --no-ri
 ```
@@ -33,11 +33,11 @@ jekyll -v
 ### 建立一个新的站点并检查jekyll是否可以运行
 
 1. 建立一个新的站点，这会创建一个目录  
-```bash
+```
 jekyll new my-awesome-site
 ```
 2. 进入站点目录并启动jekyll  
-```bash
+```
 cd my-awesome-site
 jekyll serve
 ```
@@ -47,16 +47,16 @@ jekyll serve
 ### 其他的一些有用的命令或选项  
 
 1. 安装github-pages gem.  
-提示: 这个gem绑定了github pages支持的几个其他的gems.
-```bash
+提示: 这个gem绑定了github pages支持的几个其他的gems.  
+```
 sudo gem install github-pages --no-rdoc --no-ri
 ```
-2. 检查站点目录中的变动并重新生成站点
-```bash
+2. 检查站点目录中的变动并重新生成站点  
+```
 jekyll serve -w
 ```
-3. 改变服务端口号
-```bash
+3. 改变服务端口号  
+```
 jekyll serve --port 4001
 ```
 
@@ -71,7 +71,7 @@ git clone https://github.com/eyulush/my_test_site.git
 ```
 4. 直接用jekyll建立初始的站点  
 提示: 在已有的目录中建立站点而不是新建一个目录，clone下来的目录是非空的，所以用--force选项   
-```bash
+```
 cd my_test_site  
 jekyll new . --force
 ```
@@ -79,12 +79,12 @@ jekyll new . --force
 jekyll的站点配置文件是站点目录下的_config.yml   
 修改baseurl为/my_test_site,你也可以配置上title, url,等
 6. 使用git来commit新建的站点文件  
-```bash
+```
 git add .  
 git commit -m 'first commit for new test site'
 ```
 7. 使用git来push内容到github  
-```bash
+```
 git push  
 ```
 8. 在网上查看新建立的站点  
@@ -112,15 +112,15 @@ http://jekyll.tips/templates/
 #### 安装模板
 minimal-mistakes模板的安装教程在 https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/
 
-1. 直接克隆repo的gh-pages到本地
-```bash
-git clone -b gh-pages https://mmistakes.github.io/minimal-mistakes.git
+1. 直接克隆repo的gh-pages到本地  
 ```
+git clone -b gh-pages https://mmistakes.github.io/minimal-mistakes.git
+```  
 2. 在本地进行定制修改，使用本地的jekyll进行查看  
-```bash  
+```  
 bundle install
 bundle exec jekyll serve --config _config.yml _config.dev.yml  
-```
+```  
 访问地址 http://localhost:4000/try_template_mm/  
 3. 在github新建一个repository,并克隆到本地
 说明:
@@ -133,7 +133,7 @@ bundle exec jekyll serve --config _config.yml _config.dev.yml
 1. 修改标题等
 直接编辑_config.yml文件，设置title为'鱼头的技术小站'
 设定baseurl和url,下面是例子  
-```markdown
+```
 title                    : "鱼头的技术小站"
 title_separator          : "-"
 name                     : &name "Lucius Yu"
@@ -149,36 +149,35 @@ baseurl                  : "/try_template_mm" # the subpath of your site, e.g. "
 头像的图片放在_image目录下，同时更改_config.yml设置你的个人介绍和个人头像的图片
 
 4. 去除广告
-广告设置在_layout/目录下的default.html中,直接注释掉就好了  
-```yaml
+广告设置在_layout/目录下的default.html中,直接注释掉就好了   
+```
 <!-- Remove google ads
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 -->
 ```
 
-4. 修改主页
+5. 修改主页
 主页的设定页面在_pages目录下的home.md
-修改主页时如果只是想注释掉某些部分，在Jekyll使用的Liquid语言上注释是  
-```liquid
+修改主页时如果只是想注释掉某些部分，在Jekyll使用的Liquid语言上注释是   
+```
 {% comment %}
 ...
 {% endcomment %}
 ```
 
-5. 修改关于页面
+6. 修改关于页面
 关于页面在_pages目录下的about.md
 
-6. 修改条款与隐私页面
+7. 修改条款与隐私页面
 
-7. 设定License
+8. 设定License
 
 #### 如何写文档
 
 ###### 文档格式的说明
 
-文档直接使用markdown来编写，写好的文档放在_doc目录下，每篇文档的开头学要如下的声明部分，例如_doc目录下的07-ui-text.md
-
-```markdown
+文档直接使用markdown来编写，写好的文档放在_doc目录下，每篇文档的开头学要如下的声明部分，例如_doc目录下的07-ui-text.md  
+```
 ---
 title: "UI Text"
 permalink: /docs/ui-text/
@@ -193,7 +192,7 @@ modified: 2016-04-27T10:35:05-04:00
 一般的post文章放在_post目录下，post文章的开头格式如下例所示  
 
 
-```markdown
+```
 ---
 title: "Edge Case: Nested and Mixed Lists"
 categories:
