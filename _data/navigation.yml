@@ -48,4 +48,4 @@ docs:
   - title: 自然语言处理
     children:
       - title: "神经网络语言模型简介"
-        url: /docs/machine learning/NNLM/ 
+        url: /docs/machine learning/NNLM/
