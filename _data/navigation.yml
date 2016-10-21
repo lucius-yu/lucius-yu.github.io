@@ -45,4 +45,7 @@ docs:
         url: /docs/machine learning/SNE/
       - title: "t-SNE非线性降维"
         url: /docs/machine learning/t-SNE/
-     
+  - title: 自然语言处理
+    children:
+      - title: "神经网络语言模型简介"
+        url: /docs/machine learning/NNLM/ 
