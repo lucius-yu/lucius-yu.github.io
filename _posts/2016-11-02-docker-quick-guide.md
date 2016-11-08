@@ -81,7 +81,11 @@ CMD /usr/games/fortune -a | cowsay
 
 ### Build an image from your Dockerfile
 
-build your new image by typing the 'docker build -t docker-whale .' command
+build your new image by typing the following command
+
+```
+docker build -t docker-whale .
+```
 
 ### Learn about the build process
 
