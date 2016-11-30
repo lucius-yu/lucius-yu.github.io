@@ -43,6 +43,8 @@ docs:
     children:
       - title: "随机森林与AdaBoost Decision Tree"
         url: /docs/machine learning/random-forest-and-adaboost-decision-tree/
+      - title: "Gradient Boosting Decision Tree 简介"
+        url: /docs/machine learning/gradient-boosting/
   - title: 数据处理
     children:
       - title: "SNE非线性降维"
