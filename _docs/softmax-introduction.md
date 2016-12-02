@@ -15,7 +15,7 @@ Softmax回归用于处理n分类的问题,是一个判别模型.在神经网络�
 
 先看一个简单的无向网络图
 
-![Simple Network]({{ site.url}}/doc-images/machine-learning/softmax-introduction-01.PNG
+![Simple Network]({{ site.url}}/doc-images/machine-learning/softmax-introduction-01.PNG)
 
 定义操作$\phi = \lbrace \phi_1(D_1), \phi_2(D_2),....\phi_n(D_n) \rbrace$
 
