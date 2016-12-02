@@ -39,6 +39,10 @@ docs:
     children:
       - title: "EM算法简介"
         url: /docs/machine learning/EM/ 
+  - title: 神经网络基础
+    children:
+      - title: "Softmax简介"
+        url: /docs/machine learning/softmax-introduction/ 
   - title: 聚合模型
     children:
       - title: "随机森林与AdaBoost Decision Tree"
