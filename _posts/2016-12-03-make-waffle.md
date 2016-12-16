@@ -3,7 +3,7 @@ title: make waffle
 categories:
   - life posts
 tags:
-  - life
+  - life
   - food
   - sweden
 date: 2016-12-03 21:23:26 +0100
