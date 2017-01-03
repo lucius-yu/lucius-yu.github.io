@@ -59,3 +59,5 @@ docs:
     children:
       - title: "神经网络语言模型简介"
         url: /docs/machine learning/NNLM/
+      - title: "word2vec简介"
+        url: /docs/machine learning/word2vec/
