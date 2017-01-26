@@ -35,10 +35,12 @@ main:
     
 # documentation links
 docs:
-  - title: 基本算法
+  - title: 概率模型
     children:
       - title: "EM算法简介"
         url: /docs/machine learning/EM/ 
+      - title: "beta分布,dirichlet分布与贝叶斯参数估计简介"
+        url: /docs/machine learning/BaysianEstimation/ 
   - title: 神经网络基础
     children:
       - title: "Softmax简介"
