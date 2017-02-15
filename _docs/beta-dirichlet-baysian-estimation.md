@@ -73,6 +73,8 @@ $$ \Gamma(x) = \int_{0}^{\infty} t^{x-1} e^{-t} dt $$
 Gamma的介绍可以参考网上的文章, http://cos.name/2013/01/lda-math-gamma-function/, 快速的理解可以直接认为是阶乘在实数和复数域的推广. Gamma函数具有下列性质
 
 $$\Gamma(x+1) = x\Gamma(x)$$
+
+
 $$\Gamma(x) = (n-1)!$$
 
 #### Beta 函数
