@@ -1,6 +1,6 @@
 ---
 title: beta分布,dirichlet分布与贝叶斯参数估计简介
-permalink: /docs/machine learning/BaysianEstimation/
+permalink: /docs/probability/BaysianEstimation/
 excerpt: beta, dirichlet dirichlet and baysian estimation introduction
 created: 2017-01-24 22:50:15 +0200
 ---

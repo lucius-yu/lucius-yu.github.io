@@ -22,7 +22,7 @@ foo:
 # main links links
 main:
   - title: "机器学习"
-    url: /docs/machine learning/EM/
+    url: /docs/probability/EM/
 
   - title: "技术博客"
     url: /technical posts/
@@ -38,9 +38,13 @@ docs:
   - title: 概率模型
     children:
       - title: "EM算法简介"
-        url: /docs/machine learning/EM/ 
+        url: /docs/probability/EM/ 
+      - title: "贝叶斯网络结构学习1"
+        url: /docs/probability/BNStructureLearning1/
+      - title: "二项分布,负二项分布,泊松分布简介"
+        url: /docs/probability/BinomialPascalPoisson/ 
       - title: "beta分布,dirichlet分布与贝叶斯参数估计简介"
-        url: /docs/machine learning/BaysianEstimation/ 
+        url: /docs/probability/BaysianEstimation/ 
   - title: 神经网络基础
     children:
       - title: "Softmax简介"

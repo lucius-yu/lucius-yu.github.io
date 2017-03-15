@@ -1,6 +1,6 @@
 ---
 title: EM 算法简介
-permalink: /docs/machine learning/EM/
+permalink: /docs/probability/EM/
 excerpt: EM algorithm introduction
 created: 2016-09-20 22:50:15 +0200
 ---
