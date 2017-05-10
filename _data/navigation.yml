@@ -57,6 +57,8 @@ docs:
         url: /docs/machine learning/gradient-boosting/
   - title: 数据处理
     children:
+      - title: "PCA数据降维"
+        url: /docs/machine learning/PCA/
       - title: "SNE非线性降维"
         url: /docs/machine learning/SNE/
       - title: "t-SNE非线性降维"
