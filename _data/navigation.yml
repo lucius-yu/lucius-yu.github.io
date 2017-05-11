@@ -41,6 +41,8 @@ docs:
         url: /docs/probability/EM/ 
       - title: "贝叶斯网络结构学习1"
         url: /docs/probability/BNStructureLearning1/
+      - title: "矩母函数简介"
+        url: /docs/probability/mgf/
       - title: "二项分布,负二项分布,泊松分布简介"
         url: /docs/probability/BinomialPascalPoisson/ 
       - title: "beta分布,dirichlet分布与贝叶斯参数估计简介"
