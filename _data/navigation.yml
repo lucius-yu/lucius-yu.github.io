@@ -47,6 +47,8 @@ docs:
         url: /docs/probability/BinomialPascalPoisson/ 
       - title: "beta分布,dirichlet分布与贝叶斯参数估计简介"
         url: /docs/probability/BaysianEstimation/ 
+      - title: "基本采样方法"
+        url: /docs/probability/BasicSamplingMethod/ 
   - title: 神经网络基础
     children:
       - title: "Softmax简介"
