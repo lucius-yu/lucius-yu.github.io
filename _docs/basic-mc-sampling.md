@@ -17,7 +17,7 @@ created: 2017-05-31 23:50:15 +0200
 
 拒绝采样采用蒙特卡洛方法. 对于一个随机变量的分布p,如果分布p不方便进行直接采样,那么给出一个便宜采样的建议分布q,同时一个数M. 满足下列不等式
 
-$$ p(x) <= Mq(x) $$
+$$p(x) \le M q(x)$$
 
 从建议分布q上进行采样得到一个样本,设为$x_i$, 此时需要决定是否接受还是拒绝这个样本,该样本被接受的概率为 $\frac{p(x_i)}{Mq(x_i)}$. 具体的做法为,从[0,1)区间的均匀分布中采样得到一个样本 $u_i$, 若 $u_i <= \frac{p(x_i)}{Mq(x_i)}$ 则接受该样本,否则拒绝该样本.
 
@@ -52,7 +52,7 @@ plt.show()
 
 ![reject sampling for beta distribution]({{ site.url}}/doc-images/probability/BasicMCSamplingMethod-02.PNG)
 
-下列代码为采样过程的代码 
+下列代码为采样过程的代码
 
 ```
 # random sampling 50000 on uniform in [0,1)
