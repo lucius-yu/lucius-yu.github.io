@@ -47,6 +47,8 @@ docs:
         url: /docs/probability/BasicSamplingMethod/ 
       - title: "基本的蒙特卡洛采样方法"
         url: /docs/probability/BasicMCSamplingMethod/
+      - title: "MCMC采样方法,Metropolis-Hasting算法"
+        url: /docs/probability/MCMCSamplingMethod/
       - title: "EM算法简介"
         url: /docs/probability/EM/ 
       - title: "贝叶斯网络结构学习1"
