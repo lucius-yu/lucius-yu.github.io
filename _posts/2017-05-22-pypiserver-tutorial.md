@@ -76,6 +76,38 @@ git push --tags
 
 python setup.py sdist upload -r local
 
+## pip.conf 与 pypirc
+
+pip.conf 是pip的用户配置文件,用于方便下载安装指定库中的package, 例如
+
+路径选项
+
+$VIRTUAL_ENV/pip.conf
+$HOME/.pip/pip.conf
+/etc/pip.conf
+
+'''
+[global]
+index = http://localhost:8080/simple
+index-url = http://localhost:8080/simple
+'''
+
+而pyrc 是pypi-server客户端的配置文件, 用于方便上传安装包, 例如
+'''
+[distutils]
+index-servers =
+  pypi
+  local
+
+[pypi]
+username:<your_pypi_username>
+password:<your_pypi_passwd>
+
+[local]
+repository: http://localhost:8080
+username: <some_username>
+password: <some_passwd>
+'''
 ## 参考
 
 https://pypi.python.org/pypi/pypiserver#quickstart-installation-and-usage

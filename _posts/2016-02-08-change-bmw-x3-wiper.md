@@ -1,7 +1,7 @@
 ---
 title: change bmw x3 wiper instruction
 categories:
-  - life pos
+  - life posts
 tags:
   - life
   - car

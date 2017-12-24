@@ -9,6 +9,20 @@ date: 2016-11-02 13:49:49 +0200
 
 # Docker quick guide
 
+## quick reference
+
+Show images  
+* docker images
+
+Create container on background with name, mount local directory as volume, publish port
+* docker run -itd -P --name docker_test -v ~/docker_space:/work_space ubuntu
+
+Execute interactive bash on container
+* docker exec -it docker_test bash
+
+Stop container
+* docker stop docker_test
+
 ## Installation
 
 Installation: please refer to  https://docs.docker.com/engine/getstarted/linux_install_help/
@@ -81,10 +95,10 @@ CMD /usr/games/fortune -a | cowsay
 
 ### Build an image from your Dockerfile
 
-build your new image by typing the following command
+build your new image by typing the following command. with --rm option, docker will remove dangling images after sucessfully build
 
 ```
-docker build -t docker-whale .
+docker build --rm=true -t docker-whale .
 ```
 
 ### Learn about the build process
@@ -109,6 +123,14 @@ Step 3 : CMD /usr/games/fortune -a | cowsay
 Removing intermediate container b7e2290a9d5c
 Successfully built 62ea5e7f2ddd
 ```
+
+* Remove dangling images
+
+After building, there will be some dangling images marked with None. To remove dangling images, use following commands
+
+docker images -f "dangling=true" -q
+docker rmi  $(docker images -f "dangling=true" -q)
+
 
 ### Run your new docker-whale  
 
