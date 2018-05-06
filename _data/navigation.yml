@@ -30,6 +30,9 @@ main:
   - title: "生活琐事"
     url: /life posts/
 
+  - title: "瑞典语"
+    url: /swedish posts/
+    
   - title: "关于"
     url: /about/
     
