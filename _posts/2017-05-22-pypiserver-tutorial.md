@@ -1,7 +1,7 @@
 ---
 title: pypiserver tutorial
 categories:
-  - technical post
+  - technical posts
 tags:
   - python
   - pypiserver
