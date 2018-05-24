@@ -40,8 +40,10 @@ main:
 docs:
   - title: 概率模型
     children:
-      - title: "二项分布,负二项分布,泊松分布简介"
-        url: /docs/probability/BinomialPascalPoisson/ 
+      - title: "二项分布,负二项分布简介"
+        url: /docs/probability/BinomialPascal/ 
+      - title: "泊松分布,指数分布简介"
+        url: /docs/probability/PoissonExponential/ 
       - title: "beta分布,dirichlet分布与贝叶斯参数估计简介"
         url: /docs/probability/BaysianEstimation/ 
       - title: "矩母函数简介"

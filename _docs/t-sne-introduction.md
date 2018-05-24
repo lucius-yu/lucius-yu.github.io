@@ -25,7 +25,7 @@ $$ p(j \vert i)=\frac{exp(-\frac{ \Vert x_i - x_j \Vert ^2} {2\sigma^2_i})}{\sum
 如果我们需要修改成对称形式可以简单的修改为
 $$ p(j \vert i)=\frac{exp(-\frac{ \Vert x_i - x_j \Vert ^2} {2\sigma^2})}{\sum_{k \neq l}exp(-\frac{ \Vert x_k - x_l \Vert ^2} {2\sigma^2})} $$
 
-* 将$\sigma$固定,不随点的改变而改变
+* 将 $\sigma$ 固定,不随点的改变而改变
 * 分母也不是用点i到其他点的距离,而是用所有点的两两距离
 
 但是上面的修改并不好, 实际是定义一个对称的联合概率为对称的条件概率, 式子如下
