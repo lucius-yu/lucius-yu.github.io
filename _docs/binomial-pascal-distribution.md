@@ -1,6 +1,6 @@
 ---
 title: 二项分布,负二项分布简介
-permalink: /docs/probability/BinomialPascalPoisson/
+permalink: /docs/probability/BinomialPascal/
 excerpt: binomial pascal poisson introduction
 created: 2017-02-14 22:50:15 +0200
 ---
