@@ -23,7 +23,7 @@ Model-free learning指我们将解决一个MDP(马尔科夫决策过程)问题,�
 
 ### 符号
 
-![notations](assets/markdown-img-paste-20180607110757801.png)
+![notations]({{site.url}}/doc-images/reinforcement-learning/monte-carlo-temporal-difference-learning-01.png)
 
 State-value function 给出在服从策略$\pi$时状态s的真正价值. 从等式中看出是一个递归过程.
 
