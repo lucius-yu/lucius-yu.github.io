@@ -72,7 +72,7 @@ $$ V(s_t) = V + \frac{1}{N_t}({G_t-V}) $$
 
 前面说的是每次访问状态s都累积求平均的做法,还有一种是在一个回合中只考虑首次访问状态的累积求和方法。
 
-![first visit MC](assets/markdown-img-paste-20180608120348912.png)
+![first visit MC]({{site.url}}/doc-images/reinforcement-learning/monte-carlo-temporal-difference-learning-02.png)
 
 ### 备注
 
@@ -90,7 +90,7 @@ monte-carlo学习的策略评估有一个问题, 那就是学习是要基于完�
 
 ### MC与TD的对比
 
-![MC and TD](assets/markdown-img-paste-2018061111035415.png)
+![MC and TD]({{site.url}}/doc-images/reinforcement-learning/monte-carlo-temporal-difference-learning-03.png)
 
 从更新公式来看, TD是有偏估计因为V的估计用到了另一个估计量, 而MC是无偏估计,无偏估计量的期望等于真值.
 
@@ -104,7 +104,7 @@ monte-carlo学习的策略评估有一个问题, 那就是学习是要基于完�
 
 Driving Home Example
 
-![Driving Home](assets/markdown-img-paste-20180611111252105.png)
+![Driving Home]({{site.url}}/doc-images/reinforcement-learning/monte-carlo-temporal-difference-learning-04.png)
 
 * Predicted Time to Go ($V(S_t)$)是从历史回合中特出的估计值
 * 当离开办公室时, 预估总时间为30
@@ -121,7 +121,7 @@ Driving Home Example
 
 收敛速度比较, 采用MRP过程来对比MC和TD的收敛速度. MRP是没有action的MDP. 一个随机游走的MRP过程,如下图
 
-![Random Walk](assets/markdown-img-paste-20180611170415359.png)
+![Random Walk]({{site.url}}/doc-images/reinforcement-learning/monte-carlo-temporal-difference-learning-05.png)
 
 由中间点C开始,每一步为50%向左或者向右, 移动到最左边或者最右边结束, 如果最右边结束则有奖励1, 其他情况奖励为0.
 
@@ -130,7 +130,7 @@ $$\frac{1}{6} \frac{2}{6} ... \frac{5}{6}$$
 
 结果如下
 
-![convergence](assets/markdown-img-paste-20180611170952832.png)
+![convergence]({{site.url}}/doc-images/reinforcement-learning/monte-carlo-temporal-difference-learning-06.png)
 
 * TD收敛快很多
 * 有些TD曲线先下降而后略有上升只是由于最后一步的步长造成的, 一直运行下去的还是会稳定收敛的.
