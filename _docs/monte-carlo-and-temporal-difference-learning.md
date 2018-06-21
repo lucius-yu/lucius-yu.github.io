@@ -12,7 +12,7 @@ created: 2018-06-07 03:40:15 +0200
 * 策略评估 (policy evaluation)
 * 策略控制 (policy control)
 
-策略评估用于评估策略的好坏,而策略控制用来改进策略
+策略评估用于评估策略的好坏,而策略控制用来改进策略, 这里我们只讨论策略评估或者说是预测问题.
 
 Model-free learning指我们将解决一个MDP(马尔科夫决策过程)问题,但是我们不知道控制该MDP的模型信息. 而在采用动态规划解决MDP问题时,我们是需要知道模型信息的,例如给定状态和动作,我们知道转移到新的不同状态的概率.
 
@@ -134,6 +134,95 @@ $$\frac{1}{6} \frac{2}{6} ... \frac{5}{6}$$
 
 * TD收敛快很多
 * 有些TD曲线先下降而后略有上升只是由于最后一步的步长造成的, 一直运行下去的还是会稳定收敛的.
+
+
+### n步TD
+
+上面提到的TD学习是利用t+1时刻状态价值的估计值来计算当前t时刻回报估计, 一种介于TD和MC学习之间的做法, 利用n步时刻之后(t+n)的回报估计来更新当前时刻(t)的状态价值估计. 当n趋于无穷时就是MC学习.
+
+$$ n = 1, (TD), G_t^{(1)} = R_{t+1} + \gamma V(S_{t+1}) $$
+$$ n = 2, (TD), G_t^{(2)} = R_{t+1} + \gamma R_{t+2} + \gamma^2V(S_{t+2}) $$
+$$ ... $$
+$$ n = \infty, (MC),  G_t^{(\infty)} = R_{t+1} + \gamma R_{t+2} + ... + \gamma^{T-t-1} R_T $$
+
+上式中T为最后一步的时刻, 我们有n步的回报定义为
+
+$$ G_t^{(n)} = R_{t+1} + \gamma R_{t+2} + ... + \gamma^n V(S_{t+n})$$
+
+n步TD学习的更新公式
+
+$$ V(S_t) \leftarrow V(S_t) + \alpha (G_t^{(n)} - V(S_t))$$
+
+n步TD学习(预测问题)的例子, 19状态的随机游走, n=1 就是TD(0), 而n=512时就很接近MC学习. 在下面的例子中看出有时n取中间值例如4或者8时同时 $\alpha$ 为 0.2或者0.4好于两个极端值的情况
+
+![n step TD RandomWalk Comparation]({{site.url}}/doc-images/reinforcement-learning/monte-carlo-temporal-difference-learning-07.png)
+
+### TD $(\lambda)$
+
+现在的问题是实际运用中如何选取n? 用n=4或者n=8来估计V,又或者把这两个估计的V平均一下. 既然想到了平均,那么是不是可以对不同n的估计值利用加权的方法进行融合一下呢? 这就是TD ($\lambda$) 的方法. 如何设计加权的系数呢,
+
+* 所有的权重系数和为1
+* 各项系数间为等比数列. 就如同奖励随时间衰减一样.
+
+在TD($\lambda$) 中各项权重系数定义为 $(1-\lambda) \lambda^{n-1}$ 能满足上面的两个要求. 于是有回报的估计为
+
+$$ G_t^{(\lambda)} = (1-\lambda) G_t^{(1)} + (1-\lambda) \lambda G_t^{(2)} ... +  (1-\lambda) \lambda^{n-1} G_t^{(n)} $$
+
+备注, 实际上当n趋于无穷时所有系数和为1, 而在有限步后终止时, 所有系数之和不足1时的剩余部分都应该用作最终回报的系数. 其实可以想象在终止后仍然还有无穷多步,只不过每步都还停留在最终状态得到最终回报.
+
+备注, $(1-\lambda)$ 实际上也就是归一化因子
+
+![TD lambda weighting]({{site.url}}/doc-images/reinforcement-learning/monte-carlo-temporal-difference-learning-08.png)
+(assets/markdown-img-paste-20180620154202412.png)
+
+#### 前向视角
+
+该视角也是 $TD(\lambda)$ 的定义, 需要用到将来直到回合终止时刻的回报加权和,
+
+![TD lambda forward view]({{site.url}}/doc-images/reinforcement-learning/monte-carlo-temporal-difference-learning-09.png)
+
+更新公式
+
+$$ V(S_t) \leftarrow V(S_t) + \alpha (G_t^{(\lambda)} - V(S_t))$$
+
+更新公式中用到lambda回报$G_t^{(\lambda)}$作为目标, 其计算需要用到将来知道回合结束时每步的信息. 又回到MC的同样问题.
+
+#### 后向视角
+
+顾名思义, 与其等待将来要发生的事情来更新当前, 不如记住过去的事情,用当前的状态来更新过去的状态值
+
+从后往前,面朝已经经历过的状态流，获得当前回报并利用下一个状态的值函数得到TD偏差后，向已经经历过的状态通知，告诉这些已经经历过的状态处的值函数需要利用当前时刻的TD偏差进行更新。此时过往的每个状态值函数更新的大小应该跟距离当前状态的步数有关
+
+* 前向视角提供了理论基础定义
+* 后向视角提供了机制
+* 在线更新, 从未完成的序列中每步更新
+
+#### Eligibility Trace
+
+当一系列的事件或者现象出现后，发生了某个特殊事件。 那么最终的特殊事件的发生和前面一系列的事件和现象的关联是如何设定的?
+
+* credit assigment问题
+* 频率相关，事件与其他事件或现象的次数相关，假设次数越多的越相关(其实应该考虑归一化后的频率比较)
+* 发生时间相关，事件与其他事件的发生时间间隔相关，假设约近的越相关
+* Eligibility Trace 结合了发生频率和发生时间相关
+
+$$ E_0(s) = 0 $$
+$$ E_t(s) = \gamma \lambda E_{t-1}(s) + I(S==s)$$
+
+$I()$ 是指示函数,当函数内条件为真时值为1,否则为0
+
+* 初始时所有状态的EligibilityTrace为0
+* t时刻的状态s的EligibilityTrace为衰减后的t-1时刻的EligibilityTrace, 若t时刻的状态 $s_t$ 为s则再加上1，否则就仅仅是衰减后的值
+
+#### 后向视角的更新机制
+
+有了Eligibility Trace后可以定义后向更新机制如下, 在回合中的每个时刻t时
+
+* 更新 $E_t(s) = \gamma \lambda E_{t-1}(s) + 1 (S==s)$
+* 计算TD Error $\delta_t = R_{t+1}+\gamma V(S_{t+1}-V(S_t))$
+* 使用Eligibility Trace作为Error的缩放因子来更新value function V(s). $V(s) \leftarrow V(s) - \alpha \delta_t E_t(s)$
+
+We propagate current error information into the states we visited in the past. This allows us to combine the n-step returns in an online fashion
 
 
 ## 参考
