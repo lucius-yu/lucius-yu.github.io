@@ -54,19 +54,23 @@ https://post.smzdm.com/p/552894/?nozhiyou
 
 2. 不踩刹车, 按两次启动按钮, 也就是打开电门, 系统自检  
 
-![power_on](assets/markdown-img-paste-20180326111859369.png)  
+![power_on]({{ site.url}}/post-images/reset-bmw-x3-maintenance-alarm/markdown-img-paste-20180326111859369.png)
+
 
 3. 按住左下角复位键不放, 约5秒后出现感叹号, 不管它, 继续按着不放. 知道出现机油标识时就进入复位程序了. 这时先放手.  
 
-![start_reset_program](assets/markdown-img-paste-20180326112211277.png)
-![in_reset_program](assets/markdown-img-paste-20180326112252959.png)
+![start_reset_program]({{ site.url}}/post-images/reset-bmw-x3-maintenance-alarm/markdown-img-paste-20180326112211277.png)
+
+![in_reset_program]({{ site.url}}/post-images/reset-bmw-x3-maintenance-alarm/markdown-img-paste-20180326112252959.png)
+
 
 4. 短按一次复位键 系统显示依次是需要复位的项目 制动液 刹车片等等  
 
 5. 我这里只复位制动液 所以到制动液界面后 再按住复位键不放 出现一个RESET？ 这时候放开 再重新按住不放一次 直到下面一条横线出来后 复位就成功了 其他项目复位也是一样的  
 
-![select_reset_item](assets/markdown-img-paste-20180326112508855.png)
-![reset_item](assets/markdown-img-paste-20180326112632822.png)
+![select_reset_item]({{ site.url}}/post-images/reset-bmw-x3-maintenance-alarm/markdown-img-paste-20180326112508855.png)
+
+![reset_item]({{ site.url}}/post-images/reset-bmw-x3-maintenance-alarm/markdown-img-paste-20180326112632822.png)
 
 
 ## 最后问题的解决
