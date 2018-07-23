@@ -1,5 +1,5 @@
 ---
-title: 无模型控制
+title: 无模型信息控制
 permalink: /docs/rl_learning/model-free-control/
 excerpt: model free control
 created: 2018-06-26 03:40:15 +0200
@@ -37,7 +37,7 @@ Off-policy 学习
 
 ## 通用的策略迭代框架
 
-![Generalised Policy Iteration](assets/markdown-img-paste-20180625104555870.png)
+![Generalised Policy Iteration](../doc-images/reinforcement-learning/model-free-control-01.png)
 
 ## On-policy Monte Carlo control
 
@@ -80,7 +80,6 @@ $$ = \sum_{a \in A} \pi(a|s)q_\pi(s,a) = v_\pi(s)$$
 * 思路是计算基于新策略选择动作后的价值函数要大于旧策略的价值函数. 价值函数分两个部分,一个部分是以概率 $\epsilon / m$ 探索,其产生的价值不会有差异. 第二个部分是根据策略选择已知最优动作而产生的价值.
 * 直觉上很清楚，在经过可能发生的新的探索后, 对模型的信息有增益, 据此用贪婪算法选择的最优动作产生的价值会大于基于更少信息的旧策略的贪婪算法选择动作产生的价值
 
-
 ### Monte Carlo Control的策略迭代
 
 ![MC control policy iteration](../doc-images/reinforcement-learning/model-free-control-02.png)
@@ -114,6 +113,9 @@ $$ \lim_{k \rightarrow \infty} \pi_k (a|s) = I(a= \mathop{\arg\max_{a^\prime \in
 $$ N(S_t, A_t) \leftarrow N(S_t,A_t) + 1 $$
 $$ Q(S_t, A_t) \leftarrow Q(S_t,A_t) + \frac{1}{N(S_t,A_t)(G_t-Q(S_t,A_t))}$$
 * 使用 $\epsilon-greedy$ 进行策略提升
+
+
+
 
 ## 参考
 
