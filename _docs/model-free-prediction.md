@@ -184,7 +184,7 @@ $$ G_t^{(\lambda)} = (1-\lambda) G_t^{(1)} + (1-\lambda) \lambda G_t^{(2)} ... +
 
 $$ V(S_t) \leftarrow V(S_t) + \alpha (G_t^{(\lambda)} - V(S_t))$$
 
-更新公式中用到lambda回报$G_t^{(\lambda)}$作为目标, 其计算需要用到将来知道回合结束时每步的信息. 又回到MC的同样问题.
+更新公式中用到lambda回报 $G_t^{(\lambda)}$ 作为目标, 其计算需要用到将来知道回合结束时每步的信息. 又回到MC的同样问题.
 
 #### 后向视角
 
