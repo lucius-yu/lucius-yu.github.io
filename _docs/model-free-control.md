@@ -5,7 +5,6 @@ excerpt: model free control
 created: 2018-06-26 03:40:15 +0200
 ---
 
-
 ## 说明
 
 解决无模型预测和无模型控制的问题. 包含两个部分
@@ -81,9 +80,11 @@ $$ \mathop{\max_{a \in A}}q_\pi(s,a) \ge \sum_{a \in A} \frac{\pi(a|s)-\epsilon/
 
 于是
 
-$$ q_\pi (s, \pi^\prime(s)) = \sum_{a \in A} \pi^\prime(a|s) q_{\pi}(s,a) $$
-$$ = \epsilon / m \sum_{a \in A} q_\pi(s,a) + (1-\epsilon) \mathop{\max_{a \in A}}q_\pi(s,a) $$
-$$ \ge \epsilon / m \sum_{a \in A} q_\pi(s,a) + (1-\epsilon) \sum_{a \in A} \frac{\pi(a|s)-\epsilon/m}{1-\epsilon} q_\pi(s,a) $$
+$$ q_\pi (s, \pi^\prime(s)) = \sum_{a \in A} \pi^\prime(a|s) q_{\pi}(s,a) $$  
+$$ = \epsilon / m \sum_{a \in A} q_\pi(s,a) + (1-\epsilon) \mathop{\max_{a \in A}}q_\pi(s,a) $$  
+$$ \ge \epsilon / m \sum_{a \in A} q_\pi(s,a) + (1-\epsilon) \sum_{a \in A} \frac{\pi(a|s)-\epsilon/m}{1-\epsilon} q_\pi(s,a) $$  
+
+
 $$ = \sum_{a \in A} \pi(a|s)q_\pi(s,a) = v_\pi(s)$$
 
 * 思路是计算基于新策略选择动作后的价值函数要大于旧策略的价值函数. 价值函数分两个部分,一个部分是以概率 $\epsilon / m$ 探索,其产生的价值不会有差异. 第二个部分是根据策略选择已知最优动作而产生的价值.
@@ -333,8 +334,8 @@ $$V(S_t) \leftarrow V(S_t) + \alpha (\frac{\pi(A_t|S_t)}{\mu(A_t|S_t)}(R_{t+1}+\
 
 * 策略控制, 考虑的是评估状态动作价值函数Q(s,a)
 * 无需重要性采样
-* 下一个要执行的动作由行为策略给出, $A_{t+1} \sim \mu (.|s_t)$
-* 而利用下一步动作来尽心策略评估评估时(更新Q), 该动作是有目标策略给出的, $A \sim \pi(.|s_t)$
+* 下一个要执行的动作由行为策略给出, $A_{t+1} \sim \mu (\cdot|s_t)$
+* 而利用下一步动作来尽心策略评估评估时(更新Q), 该动作是有目标策略给出的, $A \sim \pi(\cdot|s_t)$
 * 更新
 $$ Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha (R_{t+1} + \gamma Q(S_{t+1}, \color{red}{A^\prime}) - Q(S_t, A_t))$$
 
