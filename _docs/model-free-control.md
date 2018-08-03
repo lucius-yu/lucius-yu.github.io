@@ -65,7 +65,7 @@ $$ \pi^\prime(s) = \mathop{\arg\max_{a \in A} Q(s, a)} $$
 * 以概率 $\epsilon$ 选择去探索, 即以概率 )$\frac{\epsilon}{m}$ 随机选取动作
 
 $$ \begin{equation}
-\pi(a|s) =
+\pi(a \mid s) =
 \begin{cases}
 \epsilon / m + 1 - \epsilon & {if \space a^* = \mathop{\arg\max}_{a \in A} Q(s,a) }\\
 \epsilon / m & \text{otherwise}
@@ -76,14 +76,14 @@ $\epsilon$-Greedy Policy Improvement是确保新策略一定好于至少等于�
 
 下面的证明中需要指出对q取max一定大于任意的加权平均操作. 所以有
 
-$$ \mathop{\max_{a \in A}}q_\pi(s,a) \ge \sum_{a \in A} \frac{\pi(a|s)-\epsilon/m}{1-\epsilon} q_\pi(s,a) $$
+$$ \mathop{\max_{a \in A}}q_\pi(s,a) \ge \sum_{a \in A} \frac{\pi(a \mid s)-\epsilon/m}{1-\epsilon} q_\pi(s,a) $$
 
 于是
 
-$$ q_\pi (s, \pi^\prime(s)) = \sum_{a \in A} \pi^\prime(a|s) q_{\pi}(s,a) $$  
+$$ q_\pi (s, \pi^\prime(s)) = \sum_{a \in A} \pi^\prime(a \mid s) q_{\pi}(s,a) $$  
 $$ = \epsilon / m \sum_{a \in A} q_\pi(s,a) + (1-\epsilon) \mathop{\max_{a \in A}}q_\pi(s,a) $$  
-$$ \ge \epsilon / m \sum_{a \in A} q_\pi(s,a) + (1-\epsilon) \sum_{a \in A} \frac{\pi(a|s)-\epsilon/m}{1-\epsilon} q_\pi(s,a) $$  
-$$ = \sum_{a \in A} \pi(a|s)q_\pi(s,a) = v_\pi(s)$$  
+$$ \ge \epsilon / m \sum_{a \in A} q_\pi(s,a) + (1-\epsilon) \sum_{a \in A} \frac{\pi(a \mid s)-\epsilon/m}{1-\epsilon} q_\pi(s,a) $$  
+$$ = \sum_{a \in A} \pi(a \mid s)q_\pi(s,a) = v_\pi(s)$$  
 
 * 思路是计算基于新策略选择动作后的价值函数要大于旧策略的价值函数. 价值函数分两个部分,一个部分是以概率 $\epsilon / m$ 探索,其产生的价值不会有差异. 第二个部分是根据策略选择已知最优动作而产生的价值.
 * 直觉上很清楚，在经过可能发生的新的探索后, 对模型的信息有增益, 据此用贪婪算法选择的最优动作产生的价值会大于基于更少信息的旧策略的贪婪算法选择动作产生的价值
@@ -118,7 +118,7 @@ $$ = \sum_{a \in A} \pi(a|s)q_\pi(s,a) = v_\pi(s)$$
 * 所有的状态-动作对应当能无限多次的被尝试到
 $$ \lim_{k \rightarrow \infty} N_k(s,a) = \infty$$
 * 策略应当收敛到一个贪婪策略
-$$ \lim_{k \rightarrow \infty} \pi_k (a|s) = I(a= \mathop{\arg\max_{a^\prime \in A}} Q_k(s,a)) $$
+$$ \lim_{k \rightarrow \infty} \pi_k (a \mid s) = I(a= \mathop{\arg\max_{a^\prime \in A}} Q_k(s,a)) $$
 
 对于 $\epsilon$-greddy来说就是需要 $\epsilon$ 不断减小(decay) 例如 当 $\epsilon_k = \frac{1}{k}$ 时,随着k增大, $\epsilon$ 趋近于0, 此时的 $\epsilon-greedy$ 符合GLIE
 
@@ -302,7 +302,7 @@ $$ = E_{X \sim Q} [\frac{P(X)}{Q(X)} f (X)] $$
 * 使用策略 $\mu$生成的返回(return)来评估策略 $\pi$
 * 对返回 $G_t$ 根据策略间的相似性进行加权
 * 对一个回合中需要计算多个重要性样本权重来对返回进行纠正
-$$G_t^{\pi/\mu} = \frac{\pi(A_t|S_t)}{\mu(A_t|S_t)} \frac{\pi(A_{t+1}|S_{t+1})}{\mu(A_{t+1}|S_{t+1})}...\frac{\pi(A_T|S_T)}{\mu(A_T|S_T)} $$
+$$G_t^{\pi/\mu} = \frac{\pi(A_t \mid S_t)}{\mu(A_t \mid S_t)} \frac{\pi(A_{t+1} \mid S_{t+1})}{\mu(A_{t+1} \mid S_{t+1})}...\frac{\pi(A_T \mid S_T)}{\mu(A_T \mid S_T)} $$
 * 用纠正后的返回来进行更新
 $$ V(S_t) \leftarrow V(S_t) + \alpha(G^{\pi/\mu}-V(S_t)) $$
 * Cannot use if $\mu$ is zero when $\pi$ is non-zero
@@ -315,7 +315,7 @@ $$ V(S_t) \leftarrow V(S_t) + \alpha(G^{\pi/\mu}-V(S_t)) $$
 * 使用策略 $\mu$生成的TD target来评估策略 $\pi$
 * 对TD target, $R + \gamma V(S')$ 用重要性加权
 * 仅需要对一步进行重要性纠正
-$$V(S_t) \leftarrow V(S_t) + \alpha (\frac{\pi(A_t|S_t)}{\mu(A_t|S_t)}(R_{t+1}+\gamma V(S_{t+1}))-V(S_t)) $$
+$$V(S_t) \leftarrow V(S_t) + \alpha (\frac{\pi(A_t \mid S_t)}{\mu(A_t \mid S_t)}(R_{t+1}+\gamma V(S_{t+1}))-V(S_t)) $$
 * Much lower variance than Monte-Carlo importance sampling
 * Policies only need to be similar over a single step
 
@@ -332,8 +332,8 @@ $$V(S_t) \leftarrow V(S_t) + \alpha (\frac{\pi(A_t|S_t)}{\mu(A_t|S_t)}(R_{t+1}+\
 
 * 策略控制, 考虑的是评估状态动作价值函数Q(s,a)
 * 无需重要性采样  
-* 下一个要执行的动作由行为策略给出, $A_{t+1} \sim \mu (\cdot|s_t)$   
-* 而利用下一步动作来尽心策略评估评估时(更新Q), 该动作是有目标策略给出的, $A \sim \pi(\cdot|s_t)$  
+* 下一个要执行的动作由行为策略给出, $A_{t+1} \sim \mu (\cdot \mid s_t)$   
+* 而利用下一步动作来尽心策略评估评估时(更新Q), 该动作是有目标策略给出的, $A \sim \pi(\cdot \mid s_t)$  
 * 更新
 $$ Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha (R_{t+1} + \gamma Q(S_{t+1}, \color{red}{A^\prime}) - Q(S_t, A_t))$$
 
