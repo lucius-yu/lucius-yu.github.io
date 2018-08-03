@@ -37,7 +37,7 @@ Off-policy 学习
 
 ## 通用的策略迭代框架
 
-![Generalised Policy Iteration](../doc-images/reinforcement-learning/model-free-control-01.png)
+![Generalised Policy Iteration]({{site.url}}/doc-images/reinforcement-learning/model-free-control-01.png)
 
 1. 采用策略 $\pi$ 更新价值函数(例如通过采样)
 2. 利用更新的价值函数采用贪婪方法提升策略
@@ -94,7 +94,7 @@ $$ = \sum_{a \in A} \pi(a|s)q_\pi(s,a) = v_\pi(s)$$
 
 ### Monte Carlo Control的策略迭代
 
-![MC control policy iteration](../doc-images/reinforcement-learning/model-free-control-02.png)
+![MC control policy iteration]({{site.url}}/doc-images/reinforcement-learning/model-free-control-02.png)
 
 * 由任意一个价值函数Q和策略 $\pi$ 开始
 * 采用MC的方法, 即服从策略 $\pi$ 的条件下运行很多个回合, 来估计策略 $\pi$ 的动作状态-价值函数
@@ -103,7 +103,7 @@ $$ = \sum_{a \in A} \pi(a|s)q_\pi(s,a) = v_\pi(s)$$
 
 缺点是效率低下
 
-![MC control policy iteration every episdo](../doc-images/reinforcement-learning/model-free-control-03.png)
+![MC control policy iteration every episdo]({{site.url}}/doc-images/reinforcement-learning/model-free-control-03.png)
 
 一个直接的改进以提高效率的做法是在策略评估时,不是先执行多个回合然后评估一个准确的Q然后进行策略提升,而是在一个回合之后评估得到一个新的Q之后就立即进行策略提升. 有点类似Stochastic gradient descent的方式.
 
@@ -157,7 +157,7 @@ $$ \lim_{k \rightarrow \infty} \pi_k (a|s) = I(a= \mathop{\arg\max_{a^\prime \in
 
 由TD control导出的算法
 
-![SARSA](../doc-images/reinforcement-learning/model-free-control-04.png)
+![SARSA]({{site.url}}/doc-images/reinforcement-learning/model-free-control-04.png)
 
 SARSA的Q价值函数更新, 在原有的Q值 Q(S,A) 上, 朝着TD Target: R + $\gamma$Q(S',A') 移动一点点 $\alpha$
 
@@ -203,9 +203,9 @@ Q(S,A)收敛到 $q_*(s,a)$ 的条件
 
 #### SARSA的实验, Windy GridWorld
 
-![SARSA Example ](../doc-images/reinforcement-learning/model-free-control-05.png)
+![SARSA Example ]({{site.url}}/doc-images/reinforcement-learning/model-free-control-05.png)
 
-![SARSA Example Result ](../doc-images/reinforcement-learning/model-free-control-06.png)
+![SARSA Example Result ]({{site.url}}/doc-images/reinforcement-learning/model-free-control-06.png)
 
 在最开始的时候需要很多步才能完成很少的回合数,而到后面完成一个回合就不需要太多的步数了,从曲线的斜率变化就能看出
 
@@ -269,7 +269,7 @@ $$ Q(S,A) \leftarrow Q(S,A) + \alpha (q_t^{(n)} - Q(S,A)) $$
 
 #### SARSA $\lambda$ 实验
 
-![SARSA Lambda Example ](../doc-images/reinforcement-learning/model-free-control-07.png)
+![SARSA Lambda Example ]({{site.url}}/doc-images/reinforcement-learning/model-free-control-07.png)
 
 与One-Step SARSA的区别在于,当回合结束是,路径上的所有状态都立即得到更新
 
@@ -389,7 +389,7 @@ Q-Learning 算法
 
 #### Q-Learning 小结
 
-![Q-Learning](../doc-images/reinforcement-learning/model-free-control-08.png)
+![Q-Learning]({{site.url}}/doc-images/reinforcement-learning/model-free-control-08.png)
 
 在状态S,动作A的价值(Q值),是执行这一步所得到的即时奖励R,再加上打折后的下一步的状态S'和下一步根据状态由目标策略选出动作A'的Q值, Q(S', A').
 
