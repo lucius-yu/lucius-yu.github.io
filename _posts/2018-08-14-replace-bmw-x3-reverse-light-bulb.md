@@ -59,6 +59,18 @@ https://www.mekonomen.se/bil/reservdelar/belysning/glodlampor/glodlampa-backljus
 
 ![buy bulb 1]({{ site.url}}/post-images/replace-bmw-x3-reverse-light-bulb/buy-bulb-01.png)
 
+Manufacturer part number 12040VPB2
+Manufacturer PHILIPS
+EAN number 8711559524160
+Voltage [V]:12
+Rated Power [W]:6
+Bulb Type:W6W
+Socket Type:W2,1x9,5d
+PHILIPSBulb, reverse light
+Item number12040VPB2
+Our price 4,66 £
+ConditionNew
+
 ## 其他
 
 后备箱上尾灯,包括两个灯泡,分别是倒车灯和雾灯. 同时还有一个LED的灯带.
