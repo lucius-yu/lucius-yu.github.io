@@ -198,6 +198,12 @@ Q(S,A)收敛到 $q_*(s,a)$ 的条件
   * $\sum_{t=1}^{\infty} \alpha_t = \infty$
   * $\sum_{t=1}^{\infty} \alpha_t^2 < \infty$
 
+调和级数序列满足上面要求,也就是robbins-monro序列.
+
+$$\sum_{t=1}^{\infty} \frac{1}{t} = \infty$$
+$$\sum_{t=1}^{\infty} \frac{1}{t^2} = \frac{\pi^2}{6}$$
+
+
 上述条件理论上保证收敛,实践中我们有时并不太关心收敛条件, SARSA基本都收敛.
 
 #### SARSA的实验, Windy GridWorld
