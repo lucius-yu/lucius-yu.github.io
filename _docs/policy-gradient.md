@@ -107,12 +107,12 @@ $$ \nabla_\theta J(\theta) = \frac{1}{m} \sum_{i=1}^m \nabla_\theta logP(\tau^i;
 
 #### 分解回合为状态和动作序列
 
-* 第一步分解很简单, 回合出现的概率为, 根据策略计算时刻t时的状态下采取各动作的概率 $\pi_\theta (a_t | s_t)$ 和时刻t时,状态s与动作a组合后下一个状态的的概率分布 $P(s_{t+1} | s_t, a_t)$
+* 第一步分解很简单, 回合出现的概率为, 根据策略计算时刻t时的状态下采取各动作的概率 $\pi_\theta (a_t \vert s_t)$ 和时刻t时,状态s与动作a组合后下一个状态的的概率分布 $P(s_{t+1} \vert s_t, a_t)$
 
 $$ \begin{aligned}
 \nabla_\theta logP(\tau; \theta) = \nabla_\theta log(\prod_{t=0}^T P(s_{t+1} \vert s_t, a_t) \pi_\theta (a_t | s_t)) \\
 = \nabla_\theta [\sum_{t=0}^T logP(s_{t+1} | s_t, a_t) + \sum_{t=0}^T log\pi_\theta (a_t | s_t)] \\
-= \nabla_\theta \sum_{t=0}^T logP(s_{t+1} | s_t, a_t) + \nabla_\theta \sum_{t=0}^T log\pi_\theta (a_t | s_t) 
+= \nabla_\theta \sum_{t=0}^T logP(s_{t+1} | s_t, a_t) + \nabla_\theta \sum_{t=0}^T log\pi_\theta (a_t | s_t)
 \end{aligned}$$
 
 * 第一项中不含有参数 $\theta$, 求导后为0, 同时可以看出优化目标的梯度仅与策略相关,与模型无关
@@ -432,5 +432,51 @@ REINFORCE with BASELINE 结果
 
 从结果看出, 引入baseline做critic后,方差降低到1200左右,性能稳定了, 240回合左右能稳定输出最大奖励200.
 
+### 演员-评论家算法
+
+* 包含两个组件
+  - 演员(actor): 策略部分, 在环境中采取行动
+  - 评论家(critic): 评估部分, 负责评估选取动作的质量,并给出改进的方向
+
+前面所讲述的带基线的REINFORCE算法也可以说是演员评论家方法
+
+$$ \nabla_\theta J(\theta) = \frac{1}{m} \sum_{i=1}^m \sum_{t=0}^T \nabla_\theta \underbrace{log\pi_\theta(a_t \vert s_t)}_{actor} \underbrace{(R_t-V_\phi(s_t))}_{critic} $$
+
+在上面的式子中仍然有一项,我们没有学习,而是用蒙特卡洛方法不断的采样统计的,就是上式中反馈奖励 $R_t$ , 尽管m趋于无穷时是无偏的,但该项具有比较大的方差. 如何降低方差呢,
+
+* 首先回顾Q value function,
+$$ Q^\pi(s_t, a_t) = E[r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + ... + \gamma^T r_T ]$$
+* 对比上节中的discounted reward $R_t = \sum_{t^\prime=t}^T \gamma^{t^\prime-t} r_{t^\prime}$ , 两者实质是一样的.
+* 改写梯度公式
+
+$$  \begin{aligned}
+\nabla_\theta J(\theta) = \frac{1}{m} \sum_{i=1}^m \sum_{t=0}^T \nabla_\theta log\pi_\theta(a_t \vert s_t) (R_t-V_\phi(s_t)) \\
+= \frac{1}{m} \sum_{i=1}^m \sum_{t=0}^T \nabla_\theta log\pi_\theta(a_t \vert s_t) (Q(s_t,a_t)-V_\phi(s_t))
+\end{aligned}$$
+
+优势函数 - Advantage function
+
+Q value function 与 V value function的差值为优势函数.
+
+$$ A = Q(s_t, a_t) - V_\phi(s_t) $$
+
+* $V^\pi(s)$ 是在状态s下,服从策略 $\pi$ 所期望的反馈奖励
+* $Q^\pi(s,a)$ 是在状态s下,执行动作a, 之后再服从策略pi能得到的期望反馈奖励
+* 优势函数advantage告诉我们, 相对于策略 $\pi$ 常规动作a, 特定动作 $a_t$ 能多得到多少反馈奖励.
+
+更新梯度公式为
+
+$$ \nabla_\theta J(\theta) = \frac{1}{m} \sum_{i=1}^m \sum_{t=0}^T \nabla_\theta log\pi_\theta(a_t \vert s_t) A(s_t, a_t)$$
+
+如何估计A呢? 可以建立一个Q network和一个V network分别估计Q和V然后相减得到A, 但这样会增加bias
+
+N步Q值函数估计, 不用单独的网络来估计Q.
+
+* 利用经验Q值估计, 也就是前面的方法, 特点是低偏差,高方差
+$$ Q^\pi(s_t, a_t) = E[r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + ... + \gamma^T r_T ]$$
+* n步Q值估计, 介于纯粹的V值估计和经验估计之间, n步之后是用baseline的V值估计, n步之内是用经验估计, 特点是中偏差,中方差.
+$$ Q^\pi(s_t, a_t) = E[r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + ... + \gamma^n V(s_{t+n}) ]$$
+* 1步估计, 特点是接近baseline的V值估计, 高偏差,低方差
+$$ Q^\pi(s_t, a_t) = E[r_t + \gamma r_{t+1} + \gamma^n V(s_{t+1}) ]$$
 
 ## 参考
