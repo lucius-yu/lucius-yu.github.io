@@ -107,4 +107,135 @@ $$ \nabla_\theta J(\theta) = \frac{1}{m} \sum_{i=1}^m \nabla_\theta logP(\tau^i;
 
 #### 分解回合为状态和动作序列
 
+* 第一步分解很简单, 回合出现的概率为, 根据策略计算时刻t时的状态下采取各动作的概率 $\pi_\theta (a_t|s_t)$ 和时刻t时,状态s与动作a组合后下一个状态的的概率分布 $P(s_{t+1}|s_t, a_t)$
+
 $$ \nabla_\theta logP(\tau; \theta) = \nabla_\theta log(\prod_{t=0}^T P(s_{t+1}|s_t, a_t) \pi_\theta (a_t|s_t)) $$
+$$ = \nabla_\theta [\sum_{t=0}^T logP(s_{t+1}|s_t, a_t) + \sum_{t=0}^T log\pi_\theta (a_t|s_t)] $$
+$$ = \nabla_\theta \sum_{t=0}^T logP(s_{t+1}|s_t, a_t) + \nabla_\theta \sum_{t=0}^T log\pi_\theta (a_t|s_t) $$
+
+* 第一项中不含有参数 $\theta$, 求导后为0, 同时可以看出优化目标的梯度仅与策略相关,与模型无关
+
+$$ = \nabla_\theta \sum_{t=0}^T log\pi_\theta (a_t|s_t) $$
+
+* 分解后结果代回原式
+
+$$ \nabla_\theta J(\theta) = \frac{1}{m} \sum_{i=1}^m \nabla_\theta logP(\tau^i; \theta) R(\tau^i) $$
+
+$$ \nabla_\theta J(\theta) = \frac{1}{m} \sum_{i=1}^m  \sum_{t=0}^T \nabla_\theta log\pi_\theta (a_t|s_t) R(\tau^i) $$
+
+* m个回合的近似估计是无偏估计, 当m趋于无穷时,估计的梯度趋于真实的梯度.
+* 最后一个式子也是REINFORCE算法的基础.
+
+#### softmax 策略
+
+如前所述, $\pi_\theta (a_t|s_t)$ 为状态到动作的概率分布函数, 当动作为离散动作时, Softmax函数(或者是最后一层为softmax的神经网络)常被用来表示各动作的概率.
+
+* 我们把行为看成是多个特征在一定权重下的线性代数和：
+$$ \phi (s,a)^T \theta $$
+* 采取某一具体行为的概率与e的该值次幂成正比, (去掉了归一化因子)
+$$ \pi_\theta(s,a) \propto e^{\phi(s,a)^T \theta }$$
+* softmax 策略下的计分函数, (把归一化因子又放回来了)
+$$ \nabla_\theta log\pi_\theta (s,a) = \phi(s,a) - E_{\pi_\theta} \phi(s,) $$
+
+#### 高斯策略
+
+略过
+
+### REINFORCE算法
+
+策略梯度中学习的第一个算法.
+
+1. 初始化策略的参数$\theta$ (例如很小的随机数)
+2. 执行策略 $a_t \sim \pi(s_t)$ 从策略函数(是给定状态下动作的概率分布)中采样出动作, 记录 状态,动作和奖励. $s_0, a_0, r_0, s_1, a_1, r_1,...,s_T,a_T,r_T$
+3. 计算整个回合的返回 $R=\sum_{t=0}^T r_t$
+4. 计算策略梯度
+$$\nabla_\theta J(\theta) = \nabla_\theta \sum_{t=0}^T log\pi_\theta (a_t|s_t) R$$
+5. 更新参数
+$$ \theta = \theta + \alpha \nabla_\theta J(\theta)$$
+6. 重复步骤2到5直至收敛
+
+### Cart Pole
+
+Cart Pole在OpenAI的gym模拟器里面，是相对比较简单的一个游戏。游戏里面有一个小车，上有竖着一根杆子。小车需要左右移动来保持杆子竖直。如果杆子倾斜的角度大于15°，那么游戏结束。小车也不能移动出一个范围（中间到两边各2.4个单位长度）。如下图所示：
+
+![cartpole]({{site.url}}/doc-images/reinforcement-learning/policy-gradient-01.png)
+
+* 状态: 水平位移, 水平位移速度, 杆子倾斜角度, 杆子倾斜角度的速度
+* 动作: 离散动作, 力的大小是固定的, 只是可以选择施加力的方向
+* 奖励: 每步奖励为1
+* 终止条件: 杆子倾斜的角度大于15° (失败), 小车移动出范围(失败), 走了200步(成功)
+
+### REINFORCE的更新
+
+这是一个实现上的问题, 在监督学习的训练中, 我们有标签数据, 正确的标签数据与我们估计值之间的某种形式的误差为代价函数是我们的优化目标, 我们求梯度然后采用梯度下降的方式进行模型参数更新.
+
+
+这里,
+1. 我们有一个根据策略给出的动作概率分布后的采样动作
+2. 我们没有正确的标签,我们只有执行采样出的动作后得到的反馈奖励
+
+我们采用伪标签的方式  
+1. 由于后续的反馈奖励R都是由采样后的样本动作a而得来的,所以伪标签的值应当设为采样后的动作.
+2. 所以对数似然函数的梯度的方向就是朝着采样后得到的动作的方向, 如果采样后动作得到的反馈奖励比较小或者负数,则相应的参数更新量也比较小或者是负的, 如果采样后动作得到的反馈奖励比较大, 则相应的参数更新量也会比较大. 从累积参数更新来说,参数的更新会增大反馈奖励大的动作概率.
+
+总结, 采用伪标签, 我们总是尝试使采样出的动作在将来更有可能发生, 但是反馈奖励大的动作我们增大的更多(参数更新量经过R的缩放), 而反馈奖励小的动作我们增大的小一些, 由于概率分布的归一化, 反馈奖励小的动作实际上我们是减小了发生的概率.
+
+同时从这里也可以看出一个潜在的改进, 就是反馈奖励小的动作(例如反馈奖励小于平均反馈奖励的)应当是负梯度,反馈奖励大的动作(例如反馈奖励大于平均反馈奖励的)是正梯度. 这其实是其改进算法REINFORCE BASELINE方法的基础.
+
+### 降低方差来改进REINFORCE算法
+
+#### 偏差与方差 bias and variance
+
+![biasvariance]({{site.url}}/doc-images/reinforcement-learning/policy-gradient-02.png)
+
+引用网页 http://scott.fortmann-roe.com/docs/BiasVariance.html
+
+REINFORCE用到无偏估计, 应该是低偏差的情况, 所以我们需要降低方差来提高性能.
+
+#### Discounted Return
+
+出发点, 在基础的REINFORCE算法中,我们对于回合中每一步的奖励都是一致的, 也就是回合的总奖励.
+
+* 如果回合中有些好的行为,也有坏的行为, 最后的奖励为0, 我们则啥都学不到.
+* 如果回合的开始有些坏的行为, 但是后续有很多好的行为,最后得到了比较好的反馈奖励, 我们则会鼓励所有的行为,包括开始的坏行为,这样学习的效率不高, 方差也大, 有很多坏的行为可能在一些回合中受到了鼓励.
+
+改进, 采用每步打折的奖励(per-step discounted return)
+$$ R_t = \sum_{t^\prime = t}^T \gamma^{t^\prime} r_{t^\prime} $$
+
+时刻t的奖励R,是使用从时刻t之后的每步的奖励之和,且每步的奖励随时间乘以折扣系数gamma.
+
+$$ \nabla_\theta J(\theta) = \sum_{t=0}^T \nabla_\theta log\pi_\theta(a_t|s_t) \sum_{t^\prime = t}^T \gamma^{t^\prime} r_{t^\prime} $$
+
+$$ = \sum_{t=0}^T \nabla_\theta log\pi_\theta(a_t|s_t) R_t$$
+
+#### REINFORCE with BASELINE
+
+正如小节, REINFORCE的更新中提到的潜在的改进所述,
+* 首先, 我们对当前策略建立一个估计,该估计是期望的性能(反馈奖励), 这个估计称为基线(baseline), $b_t = E[r_t; \theta]$
+* 在基础的REINFORCE算法中, 我们用反馈奖励对梯度缩放, 而一个改进是明确的指出, 如果策略的行为得到奖励低于策略的期望奖励, 说明这些行为不值得鼓励应该是负梯度, 只有得到反馈奖励高于期望时的行为才值得鼓励.
+* 结合discounted return, 梯度公式改写为如下式子.
+$$ \nabla_\theta J(\theta) = \frac{1}{m} \sum_{i=1}^m \sum_{t=0}^T \nabla_\theta log\pi_\theta(a_t|s_t) (R_t-b_t)$$
+* 简言之, 采用baseline技术, 即使在回合中得到得到的奖励为正, 只要其奖励低于期望,我们仍然用负梯度来(不鼓励)该回合行为的发生
+
+基线的选择
+
+* 常量 $b=\frac{1}{m} \sum_{i=1}^m R(\tau^i)$
+* 依赖与时间的 $b_t = \frac{1}{m} \sum_{i=1}^m \sum_{t^\prime=t}^T r_{t^\prime}^i$
+* 基于时间和状态的, $b_t(s_t) = E[\sum_{t^\prime=t}^T r_{t^\prime} | s_t]$
+* 基于时间和状态的基线,实际就是在计算value function.
+$$ V^\pi(s_t) = E_\pi[r_t+r_{t+1}+...+r_T | s_t]$$
+
+采用value function作为基线的方案
+
+$$  \nabla_\theta J(\theta) = \frac{1}{m} \sum_{i=1}^m \sum_{t=0}^T \nabla_\theta log\pi_\theta(a_t|s_t) (R_t-V_\phi(s_t)) $$
+
+如何估计 $V_\phi$, 直接的思路如下
+
+1. 执行m个回合 $\tau_1, \tau_2, ..., \tau_m$ 并记录状态和奖励
+2. 以最小均方差为代价函数, 用梯度下降来调整参数 $\phi$ 做价值函数的近似.
+$$ \phi_{i+1} = arg\min_\phi  \frac{1}{m} \sum_{i=1}^m \sum_{t=0}^T (V_\phi^\pi (s_t^i) - \sum_{t^\prime=t}^T r_t^i)^2 $$
+
+m个回合, 每个回合T步
+
+
+## 参考
