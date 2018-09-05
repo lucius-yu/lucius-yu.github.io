@@ -100,22 +100,22 @@ $$ \nabla_\theta J(\theta) = \frac{1}{m} \sum_{i=1}^m \nabla_\theta logP(\tau^i;
 个人理解
 
 * 似然函数是一种关于统计模型中的参数的函数，表示模型参数中的似然性. 概率用于在已知一些参数的情况下，预测接下来的观测所得到的结果，而似然性则是用于在已知某些观测所得到的结果时，对有关事物的性质的参数进行估计.
-* $L(\theta  \vert  x_1, x_2, ..., x_n) = P_\theta(x_1, x_2, ..., x_n)$ 给定样本,概率分布参数的似然性为给定参数该特定样本出现的概率.
+* $L(\theta | x_1, x_2, ..., x_n) = P_\theta(x_1, x_2, ..., x_n)$ 给定样本,概率分布参数的似然性为给定参数该特定样本出现的概率.
 * 常用的最大似然估计方法就是, 写出概率分布并代入样本数据, 然后取对数, 并分别对不同参数求导后设为0, 取得参数的估计.
 * 似然比,给定样本数据, 对不同参数的似然性比值关系
 * 这里利用梯度提升,更新前后的参数对应不同的似然性, 似然性的取对数的差值关系对应为原似然性的比值关系.
 
 #### 分解回合为状态和动作序列
 
-* 第一步分解很简单, 回合出现的概率为, 根据策略计算时刻t时的状态下采取各动作的概率 $\pi_\theta (a_t \vert s_t)$ 和时刻t时,状态s与动作a组合后下一个状态的的概率分布 $P(s_{t+1} \vert s_t, a_t)$
+* 第一步分解很简单, 回合出现的概率为, 根据策略计算时刻t时的状态下采取各动作的概率 $\pi_\theta (a_t | s_t)$ 和时刻t时,状态s与动作a组合后下一个状态的的概率分布 $P(s_{t+1} | s_t, a_t)$
 
-$$ \nabla_\theta logP(\tau; \theta) = \nabla_\theta log(\prod_{t=0}^T P(s_{t+1} \vert s_t, a_t) \pi_\theta (a_t \vert s_t)) $$
-$$ = \nabla_\theta [\sum_{t=0}^T logP(s_{t+1} \vert s_t, a_t) + \sum_{t=0}^T log\pi_\theta (a_t \vert s_t)] $$
-$$ = \nabla_\theta \sum_{t=0}^T logP(s_{t+1} \vert s_t, a_t) + \nabla_\theta \sum_{t=0}^T log\pi_\theta (a_t \vert s_t) $$
+$$ \nabla_\theta logP(\tau; \theta) = \nabla_\theta log(\prod_{t=0}^T P(s_{t+1} \vert s_t, a_t) \pi_\theta (a_t | s_t)) $$
+$$ = \nabla_\theta [\sum_{t=0}^T logP(s_{t+1} | s_t, a_t) + \sum_{t=0}^T log\pi_\theta (a_t | s_t)] $$
+$$ = \nabla_\theta \sum_{t=0}^T logP(s_{t+1} | s_t, a_t) + \nabla_\theta \sum_{t=0}^T log\pi_\theta (a_t | s_t) $$
 
 * 第一项中不含有参数 $\theta$, 求导后为0, 同时可以看出优化目标的梯度仅与策略相关,与模型无关
 
-$$ = \nabla_\theta \sum_{t=0}^T log\pi_\theta (a_t \vert s_t) $$
+$$ = \nabla_\theta \sum_{t=0}^T log\pi_\theta (a_t | s_t) $$
 
 * 分解后结果代回原式
 
