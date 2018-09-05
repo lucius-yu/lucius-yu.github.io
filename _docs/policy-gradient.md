@@ -141,7 +141,7 @@ $$ \nabla_\theta log\pi_\theta (s,a) = \phi(s,a) - E_{\pi_\theta} \phi(s,) $$
 
 略过
 
-### REINFORCE算法
+#### REINFORCE算法
 
 策略梯度中学习的第一个算法.
 
@@ -154,7 +154,7 @@ $$\nabla_\theta J(\theta) = \nabla_\theta \sum_{t=0}^T log\pi_\theta (a_t|s_t) R
 $$ \theta = \theta + \alpha \nabla_\theta J(\theta)$$
 6. 重复步骤2到5直至收敛
 
-### Cart Pole
+#### Cart Pole
 
 Cart Pole在OpenAI的gym模拟器里面，是相对比较简单的一个游戏。游戏里面有一个小车，上有竖着一根杆子。小车需要左右移动来保持杆子竖直。如果杆子倾斜的角度大于15°，那么游戏结束。小车也不能移动出一个范围（中间到两边各2.4个单位长度）。如下图所示：
 
@@ -165,7 +165,7 @@ Cart Pole在OpenAI的gym模拟器里面，是相对比较简单的一个游戏�
 * 奖励: 每步奖励为1
 * 终止条件: 杆子倾斜的角度大于15° (失败), 小车移动出范围(失败), 走了200步(成功)
 
-### REINFORCE的更新
+#### REINFORCE的更新
 
 这是一个实现上的问题, 在监督学习的训练中, 我们有标签数据, 正确的标签数据与我们估计值之间的某种形式的误差为代价函数是我们的优化目标, 我们求梯度然后采用梯度下降的方式进行模型参数更新.
 
@@ -182,9 +182,9 @@ Cart Pole在OpenAI的gym模拟器里面，是相对比较简单的一个游戏�
 
 同时从这里也可以看出一个潜在的改进, 就是反馈奖励小的动作(例如反馈奖励小于平均反馈奖励的)应当是负梯度,反馈奖励大的动作(例如反馈奖励大于平均反馈奖励的)是正梯度. 这其实是其改进算法REINFORCE BASELINE方法的基础.
 
-### 降低方差来改进REINFORCE算法
+#### 降低方差来改进REINFORCE算法
 
-#### 偏差与方差 bias and variance
+##### 偏差与方差 bias and variance
 
 ![biasvariance]({{site.url}}/doc-images/reinforcement-learning/policy-gradient-02.png)
 
@@ -192,7 +192,7 @@ Cart Pole在OpenAI的gym模拟器里面，是相对比较简单的一个游戏�
 
 REINFORCE用到无偏估计, 应该是低偏差的情况, 所以我们需要降低方差来提高性能.
 
-#### Discounted Return
+##### Discounted Return
 
 出发点, 在基础的REINFORCE算法中,我们对于回合中每一步的奖励都是一致的, 也就是回合的总奖励.
 
@@ -208,7 +208,7 @@ $$ \nabla_\theta J(\theta) = \sum_{t=0}^T \nabla_\theta log\pi_\theta(a_t|s_t) \
 
 $$ = \sum_{t=0}^T \nabla_\theta log\pi_\theta(a_t|s_t) R_t$$
 
-#### REINFORCE with BASELINE
+##### REINFORCE with BASELINE
 
 正如小节, REINFORCE的更新中提到的潜在的改进所述,
 * 首先, 我们对当前策略建立一个估计,该估计是期望的性能(反馈奖励), 这个估计称为基线(baseline), $b_t = E[r_t; \theta]$
@@ -219,9 +219,9 @@ $$ \nabla_\theta J(\theta) = \frac{1}{m} \sum_{i=1}^m \sum_{t=0}^T \nabla_\theta
 
 基线的选择
 
-* 常量 $b=\frac{1}{m} \sum_{i=1}^m R(\tau^i)$
+* 常量 $b=\frac{1}{m} \sum_{i=1}^m R(\tau^i)$ 
 * 依赖与时间的 $b_t = \frac{1}{m} \sum_{i=1}^m \sum_{t^\prime=t}^T r_{t^\prime}^i$
-* 基于时间和状态的, $b_t(s_t) = E[\sum_{t^\prime=t}^T r_{t^\prime} | s_t]$
+* 基于时间和状态的, $b_t(s_t) = E[\sum_{t^\prime=t}^T r_{t^\prime} | s_t]$ .
 * 基于时间和状态的基线,实际就是在计算value function.
 $$ V^\pi(s_t) = E_\pi[r_t+r_{t+1}+...+r_T | s_t]$$
 
@@ -236,6 +236,199 @@ $$  \nabla_\theta J(\theta) = \frac{1}{m} \sum_{i=1}^m \sum_{t=0}^T \nabla_\thet
 $$ \phi_{i+1} = arg\min_\phi  \frac{1}{m} \sum_{i=1}^m \sum_{t=0}^T (V_\phi^\pi (s_t^i) - \sum_{t^\prime=t}^T r_t^i)^2 $$
 
 m个回合, 每个回合T步
+
+具体算法
+
+* 初始化策略的参数 $\theta$ (例如很小的随机数) 和 价值函数的参数 $\phi$
+* 对每个回合 1,2,...,n 执行
+  1. 执行当前策略 $a_t \sim \pi(s_t)$ 从策略函数(是给定状态下动作的概率分布)中采样出动作, 记录 状态,动作和奖励. $s_0, a_0, r_0, s_1, a_1, r_1,...,s_T,a_T,r_T$
+  2. 对于每一步计算discounted return $R_t = \sum_{t^\prime=t}^T \gamma^{t^\prime-t} r_{t^\prime}$
+  3. 对所有的每一步,通过最小化均方差 $|V_\phi(s_t) - R_t|^2$ 来重新拟合(refit)基线, 也就是更新value function的参数
+  4. 计算策略梯度
+  $$ \nabla_\theta J(\theta) = \sum_{t=0}^T \nabla_\theta log\pi_\theta (a_t|s_t) (R_t - V_\phi(s_t))$$
+  5. 更新策略参数
+  $$ \theta = \theta + \alpha \nabla_\theta J(\theta)$$
+  6. 重复步骤直至收敛
+
+#### REINFORCE with baseline 算法实践
+
+##### 代码部分
+
+建立策略神经网络
+```python
+import cntk as C
+from cntk.layers import Sequential, Dense
+from cntk.logging import ProgressPrinter
+import numpy as np
+import gym
+
+...
+
+state_dim = env.observation_space.shape[0] # Dimension of state space
+action_count = env.action_space.n # Number of actions
+hidden_size = 128 # Number of hidden units
+update_frequency = 20
+
+# The policy network maps an observation to a probability of taking action 0 or 1.
+observations = C.sequence.input_variable(state_dim, np.float32, name="obs")
+W1 = C.parameter(shape=(state_dim, hidden_size), init=C.glorot_uniform(), name="W1")
+b1 = C.parameter(shape=hidden_size, name="b1")
+layer1 = C.relu(C.times(observations, W1) + b1)
+W2 = C.parameter(shape=(hidden_size, action_count), init=C.glorot_uniform(), name="W2")
+b2 = C.parameter(shape=action_count, name="b2")
+layer2 = C.times(layer1, W2) + b2
+output = C.sigmoid(layer2, name="output")
+```
+
+设立标签(label)(后续的代码可以看出是伪标签), 计算discounted reward, 计算损失函数($J(\theta)$), 创建优化器
+```python
+# Label will tell the network what action it should have taken.
+label = C.sequence.input_variable(1, np.float32, name="label")
+# return_weight is a scalar containing the discounted return. It will scale the PG loss.
+return_weight = C.sequence.input_variable(1, np.float32, name="weight")
+# PG Loss
+loss = -C.reduce_mean(C.log(C.square(label - output) + 1e-4) * return_weight, axis=0, name='loss')
+
+# Build the optimizer
+lr_schedule = C.learning_rate_schedule(lr=0.1, unit=C.UnitType.sample)
+m_schedule = C.momentum_schedule(0.99)
+vm_schedule = C.momentum_schedule(0.999)
+optimizer = C.adam([W1, W2], lr_schedule, momentum=m_schedule, variance_momentum=vm_schedule)
+```
+
+用神经网络做value function的近似, 模型的输出就是估计的价值(也就是基线). 这里称之为评论家(critic).
+
+```python
+critic_input = 128  # shape : output dimension of input layer
+critic_output = 1   # shape : output dimension of output layer
+
+critic = Sequential([
+    Dense(critic_input, activation=C.relu, init=C.glorot_uniform()),
+    Dense(critic_output, activation=None, init=C.glorot_uniform(scale=.01))
+])(observations)
+
+# TODO 2: Define target and Squared Error Loss Function, adam optimizier, and trainer for the Critic.
+critic_target = C.sequence.input_variable(1, np.float32, name="target")
+critic_loss = C.squared_error(critic, critic_target)
+
+critic_lr_schedule = C.learning_rate_schedule(lr=0.1, unit=C.UnitType.sample)
+critic_optimizer = C.adam(critic.parameters, critic_lr_schedule, momentum=m_schedule, variance_momentum=vm_schedule)
+critic_trainer = C.Trainer(critic, (critic_loss, None), critic_optimizer)
+```
+
+算法主体,
+* 执行m和回合,
+  + 在回合的每步时
+    - 从策略网络采样得到动作action
+    - 同时该动作也是策略网络训练用的伪标签
+    - 在环境中执行动作
+    - 记录状态,动作和奖励
+  + 回合结束后,计算回合中每步的discounted reward
+  + 用回合中每步的状态为输入,discounted reward为标签,进行在线回归拟合,就是更新value funtion的神经网络(critic)参数
+  + 用critic估计出策略的基线(baseline)
+  + 回合中实际奖励与基线对比,两者差值用于缩放策略网络的梯度
+  + 计算策略网络相对于伪标签的梯度,并且上一步的计算结果进行缩放, 然后优化器更新策略网络参数
+
+```python
+...
+for episode_number in range(max_number_of_episodes):
+    states, rewards, labels = [],[],[]
+    done = False
+    observation = env.reset()
+    t = 1
+    while not done:
+        state = np.reshape(observation, [1, state_dim]).astype(np.float32)
+        states.append(state)
+
+        # Run the policy network and get an action to take.
+        prob = output.eval(arguments={observations: state})[0][0][0]
+        # Sample from the bernoulli output distribution to get a discrete action
+        action = 1 if np.random.uniform() < prob else 0
+
+        # Pseudo labels to encourage the network to increase
+        # the probability of the chosen action. This label will be used
+        # in the loss function above.
+        y = 1 if action == 0 else 0  # a "fake label"
+        labels.append(y)
+
+        # step the environment and get new measurements
+        observation, reward, done, _ = env.step(action)
+        reward_sum += float(reward)
+
+        # Record reward (has to be done after we call step() to get reward for previous action)
+        rewards.append(float(reward))
+
+        stats.episode_rewards[episode_number] += reward
+        stats.episode_lengths[episode_number] = t
+        t += 1
+
+    # Stack together all inputs, hidden states, action gradients, and rewards for this episode
+    epx = np.vstack(states)
+    epl = np.vstack(labels).astype(np.float32)
+    epr = np.vstack(rewards).astype(np.float32)
+
+    # Compute the discounted reward backwards through time.
+    discounted_epr = discount_rewards(epr)
+
+    # TODO 3
+    # Train the critic to predict the discounted reward from the observation
+    # - use train_minibatch() function of the critic_trainer.
+    # - observations is epx which are the states, and critic_target is discounted_epr
+    # - then predict the discounted reward using the eval() function of the critic network and assign it to baseline
+    critic_trainer.train_minibatch({observations:epx, critic_target:discounted_epr}) # modify this
+    baseline = critic.eval({observations:epx}) # modify this
+
+    # Compute the baselined returns: A = R - b(s). Weight the gradients by this value.
+    baselined_returns = discounted_epr - baseline
+
+    # Keep a running estimate over the variance of the discounted rewards (in this case baselined_returns)
+    for r in baselined_returns:
+        running_variance.add(r[0])
+
+    # Forward pass
+    arguments = {observations: epx, label: epl, return_weight: baselined_returns}
+    state, outputs_map = loss.forward(arguments, outputs=loss.outputs,
+                                      keep_for_backward=loss.outputs)
+
+    # Backward pass
+    root_gradients = {v: np.ones_like(o) for v, o in outputs_map.items()}
+    vargrads_map = loss.backward(state, root_gradients, variables=set([W1, W2]))
+
+    for var, grad in vargrads_map.items():
+        gradBuffer[var.name] += grad
+
+    # Only update every 20 episodes to reduce noise
+    if episode_number % update_frequency == 0:
+        grads = {W1: gradBuffer['W1'].astype(np.float32),
+                 W2: gradBuffer['W2'].astype(np.float32)}
+        updated = optimizer.update(grads, update_frequency)
+
+        # reset the gradBuffer
+        gradBuffer = dict((var.name, np.zeros(shape=var.shape))
+                          for var in loss.parameters if var.name in ['W1', 'W2', 'b1', 'b2'])
+
+        print('Episode: %d/%d. Average reward for episode %f. Variance %f' % (episode_number, max_number_of_episodes, reward_sum / update_frequency, running_variance.get_variance()))
+
+        sys.stdout.flush()
+
+        reward_sum = 0
+
+    stats.episode_running_variance[episode_number] = running_variance.get_variance()
+```
+
+##### 结果比较
+
+Cart Pole游戏的实验
+
+REINFORCE without BASELINE 结果
+
+![reinforce_cartpole]({{site.url}}/doc-images/reinforcement-learning/policy-gradient-03.png)
+
+REINFORCE with BASELINE 结果
+
+![reinforce_baseline_cartpole]({{site.url}}/doc-images/reinforcement-learning/policy-gradient-04.png)
+
+从结果看出, 引入baseline做critic后,方差降低到1200左右,性能稳定了, 240回合左右能稳定输出最大奖励200.
 
 
 ## 参考
