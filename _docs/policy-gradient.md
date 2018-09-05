@@ -100,28 +100,28 @@ $$ \nabla_\theta J(\theta) = \frac{1}{m} \sum_{i=1}^m \nabla_\theta logP(\tau^i;
 个人理解
 
 * 似然函数是一种关于统计模型中的参数的函数，表示模型参数中的似然性. 概率用于在已知一些参数的情况下，预测接下来的观测所得到的结果，而似然性则是用于在已知某些观测所得到的结果时，对有关事物的性质的参数进行估计.
-* $L(\theta | x_1, x_2, ..., x_n) = P_\theta(x_1, x_2, ..., x_n)$ 给定样本,概率分布参数的似然性为给定参数该特定样本出现的概率.
+* $L(\theta  \vert  x_1, x_2, ..., x_n) = P_\theta(x_1, x_2, ..., x_n)$ 给定样本,概率分布参数的似然性为给定参数该特定样本出现的概率.
 * 常用的最大似然估计方法就是, 写出概率分布并代入样本数据, 然后取对数, 并分别对不同参数求导后设为0, 取得参数的估计.
 * 似然比,给定样本数据, 对不同参数的似然性比值关系
 * 这里利用梯度提升,更新前后的参数对应不同的似然性, 似然性的取对数的差值关系对应为原似然性的比值关系.
 
 #### 分解回合为状态和动作序列
 
-* 第一步分解很简单, 回合出现的概率为, 根据策略计算时刻t时的状态下采取各动作的概率 $\pi_\theta (a_t|s_t)$ 和时刻t时,状态s与动作a组合后下一个状态的的概率分布 $P(s_{t+1}|s_t, a_t)$
+* 第一步分解很简单, 回合出现的概率为, 根据策略计算时刻t时的状态下采取各动作的概率 $\pi_\theta (a_t \vert s_t)$ 和时刻t时,状态s与动作a组合后下一个状态的的概率分布 $P(s_{t+1} \vert s_t, a_t)$
 
-$$ \nabla_\theta logP(\tau; \theta) = \nabla_\theta log(\prod_{t=0}^T P(s_{t+1}|s_t, a_t) \pi_\theta (a_t|s_t)) $$
-$$ = \nabla_\theta [\sum_{t=0}^T logP(s_{t+1}|s_t, a_t) + \sum_{t=0}^T log\pi_\theta (a_t|s_t)] $$
-$$ = \nabla_\theta \sum_{t=0}^T logP(s_{t+1}|s_t, a_t) + \nabla_\theta \sum_{t=0}^T log\pi_\theta (a_t|s_t) $$
+$$ \nabla_\theta logP(\tau; \theta) = \nabla_\theta log(\prod_{t=0}^T P(s_{t+1} \vert s_t, a_t) \pi_\theta (a_t \vert s_t)) $$
+$$ = \nabla_\theta [\sum_{t=0}^T logP(s_{t+1} \vert s_t, a_t) + \sum_{t=0}^T log\pi_\theta (a_t \vert s_t)] $$
+$$ = \nabla_\theta \sum_{t=0}^T logP(s_{t+1} \vert s_t, a_t) + \nabla_\theta \sum_{t=0}^T log\pi_\theta (a_t \vert s_t) $$
 
 * 第一项中不含有参数 $\theta$, 求导后为0, 同时可以看出优化目标的梯度仅与策略相关,与模型无关
 
-$$ = \nabla_\theta \sum_{t=0}^T log\pi_\theta (a_t|s_t) $$
+$$ = \nabla_\theta \sum_{t=0}^T log\pi_\theta (a_t \vert s_t) $$
 
 * 分解后结果代回原式
 
 $$ \nabla_\theta J(\theta) = \frac{1}{m} \sum_{i=1}^m \nabla_\theta logP(\tau^i; \theta) R(\tau^i) $$
 
-$$ \nabla_\theta J(\theta) = \frac{1}{m} \sum_{i=1}^m  \sum_{t=0}^T \nabla_\theta log\pi_\theta (a_t|s_t) R(\tau^i) $$
+$$ \nabla_\theta J(\theta) = \frac{1}{m} \sum_{i=1}^m  \sum_{t=0}^T \nabla_\theta log\pi_\theta (a_t \vert s_t) R(\tau^i) $$
 
 * m个回合的近似估计是无偏估计, 当m趋于无穷时,估计的梯度趋于真实的梯度.
 * 最后一个式子也是REINFORCE算法的基础.
@@ -149,7 +149,7 @@ $$ \nabla_\theta log\pi_\theta (s,a) = \phi(s,a) - E_{\pi_\theta} \phi(s,) $$
 2. 执行策略 $a_t \sim \pi(s_t)$ 从策略函数(是给定状态下动作的概率分布)中采样出动作, 记录 状态,动作和奖励. $s_0, a_0, r_0, s_1, a_1, r_1,...,s_T,a_T,r_T$
 3. 计算整个回合的返回 $R=\sum_{t=0}^T r_t$
 4. 计算策略梯度
-$$\nabla_\theta J(\theta) = \nabla_\theta \sum_{t=0}^T log\pi_\theta (a_t|s_t) R$$
+$$\nabla_\theta J(\theta) = \nabla_\theta \sum_{t=0}^T log\pi_\theta (a_t \vert s_t) R$$
 5. 更新参数
 $$ \theta = \theta + \alpha \nabla_\theta J(\theta)$$
 6. 重复步骤2到5直至收敛
@@ -204,9 +204,9 @@ $$ R_t = \sum_{t^\prime = t}^T \gamma^{t^\prime} r_{t^\prime} $$
 
 时刻t的奖励R,是使用从时刻t之后的每步的奖励之和,且每步的奖励随时间乘以折扣系数gamma.
 
-$$ \nabla_\theta J(\theta) = \sum_{t=0}^T \nabla_\theta log\pi_\theta(a_t|s_t) \sum_{t^\prime = t}^T \gamma^{t^\prime} r_{t^\prime} $$
+$$ \nabla_\theta J(\theta) = \sum_{t=0}^T \nabla_\theta log\pi_\theta(a_t \vert s_t) \sum_{t^\prime = t}^T \gamma^{t^\prime} r_{t^\prime} $$
 
-$$ = \sum_{t=0}^T \nabla_\theta log\pi_\theta(a_t|s_t) R_t$$
+$$ = \sum_{t=0}^T \nabla_\theta log\pi_\theta(a_t \vert s_t) R_t$$
 
 ##### REINFORCE with BASELINE
 
@@ -214,7 +214,7 @@ $$ = \sum_{t=0}^T \nabla_\theta log\pi_\theta(a_t|s_t) R_t$$
 * 首先, 我们对当前策略建立一个估计,该估计是期望的性能(反馈奖励), 这个估计称为基线(baseline), $b_t = E[r_t; \theta]$
 * 在基础的REINFORCE算法中, 我们用反馈奖励对梯度缩放, 而一个改进是明确的指出, 如果策略的行为得到奖励低于策略的期望奖励, 说明这些行为不值得鼓励应该是负梯度, 只有得到反馈奖励高于期望时的行为才值得鼓励.
 * 结合discounted return, 梯度公式改写为如下式子.
-$$ \nabla_\theta J(\theta) = \frac{1}{m} \sum_{i=1}^m \sum_{t=0}^T \nabla_\theta log\pi_\theta(a_t|s_t) (R_t-b_t)$$
+$$ \nabla_\theta J(\theta) = \frac{1}{m} \sum_{i=1}^m \sum_{t=0}^T \nabla_\theta log\pi_\theta(a_t \vert s_t) (R_t-b_t)$$
 * 简言之, 采用baseline技术, 即使在回合中得到得到的奖励为正, 只要其奖励低于期望,我们仍然用负梯度来(不鼓励)该回合行为的发生
 
 基线的选择
@@ -223,11 +223,11 @@ $$ \nabla_\theta J(\theta) = \frac{1}{m} \sum_{i=1}^m \sum_{t=0}^T \nabla_\theta
 * 依赖与时间的 $b_t = \frac{1}{m} \sum_{i=1}^m \sum_{t^\prime=t}^T r_{t^\prime}^i$
 * 基于时间和状态的, $b_t(s_t) = E[\sum_{t^\prime=t}^T r_{t^\prime} \vert s_t]$ .
 * 基于时间和状态的基线,实际就是在计算value function.
-$$ V^\pi(s_t) = E_\pi[r_t+r_{t+1}+...+r_T | s_t]$$
+$$ V^\pi(s_t) = E_\pi[r_t+r_{t+1}+...+r_T  \vert  s_t]$$
 
 采用value function作为基线的方案
 
-$$  \nabla_\theta J(\theta) = \frac{1}{m} \sum_{i=1}^m \sum_{t=0}^T \nabla_\theta log\pi_\theta(a_t|s_t) (R_t-V_\phi(s_t)) $$
+$$  \nabla_\theta J(\theta) = \frac{1}{m} \sum_{i=1}^m \sum_{t=0}^T \nabla_\theta log\pi_\theta(a_t \vert s_t) (R_t-V_\phi(s_t)) $$
 
 如何估计 $V_\phi$, 直接的思路如下
 
@@ -243,9 +243,9 @@ m个回合, 每个回合T步
 * 对每个回合 1,2,...,n 执行
   1. 执行当前策略 $a_t \sim \pi(s_t)$ 从策略函数(是给定状态下动作的概率分布)中采样出动作, 记录 状态,动作和奖励. $s_0, a_0, r_0, s_1, a_1, r_1,...,s_T,a_T,r_T$
   2. 对于每一步计算discounted return $R_t = \sum_{t^\prime=t}^T \gamma^{t^\prime-t} r_{t^\prime}$
-  3. 对所有的每一步,通过最小化均方差 $|V_\phi(s_t) - R_t|^2$ 来重新拟合(refit)基线, 也就是更新value function的参数
+  3. 对所有的每一步,通过最小化均方差 $ \vert V_\phi(s_t) - R_t \vert ^2$ 来重新拟合(refit)基线, 也就是更新value function的参数
   4. 计算策略梯度
-  $$ \nabla_\theta J(\theta) = \sum_{t=0}^T \nabla_\theta log\pi_\theta (a_t|s_t) (R_t - V_\phi(s_t))$$
+  $$ \nabla_\theta J(\theta) = \sum_{t=0}^T \nabla_\theta log\pi_\theta (a_t \vert s_t) (R_t - V_\phi(s_t))$$
   5. 更新策略参数
   $$ \theta = \theta + \alpha \nabla_\theta J(\theta)$$
   6. 重复步骤直至收敛
