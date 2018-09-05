@@ -100,7 +100,7 @@ $$ \nabla_\theta J(\theta) = \frac{1}{m} \sum_{i=1}^m \nabla_\theta logP(\tau^i;
 个人理解
 
 * 似然函数是一种关于统计模型中的参数的函数，表示模型参数中的似然性. 概率用于在已知一些参数的情况下，预测接下来的观测所得到的结果，而似然性则是用于在已知某些观测所得到的结果时，对有关事物的性质的参数进行估计.
-* $L(\theta | x_1, x_2, ..., x_n) = P_\theta(x_1, x_2, ..., x_n)$ 给定样本,概率分布参数的似然性为给定参数该特定样本出现的概率.
+* $L(\theta \vert x_1, x_2, ..., x_n) = P_\theta(x_1, x_2, ..., x_n)$ 给定样本,概率分布参数的似然性为给定参数该特定样本出现的概率.
 * 常用的最大似然估计方法就是, 写出概率分布并代入样本数据, 然后取对数, 并分别对不同参数求导后设为0, 取得参数的估计.
 * 似然比,给定样本数据, 对不同参数的似然性比值关系
 * 这里利用梯度提升,更新前后的参数对应不同的似然性, 似然性的取对数的差值关系对应为原似然性的比值关系.
@@ -454,7 +454,7 @@ $$  \begin{aligned}
 = \frac{1}{m} \sum_{i=1}^m \sum_{t=0}^T \nabla_\theta log\pi_\theta(a_t \vert s_t) (Q(s_t,a_t)-V_\phi(s_t))
 \end{aligned}$$
 
-优势函数 - Advantage function
+#### 优势函数 - Advantage function
 
 Q value function 与 V value function的差值为优势函数.
 
@@ -470,7 +470,7 @@ $$ \nabla_\theta J(\theta) = \frac{1}{m} \sum_{i=1}^m \sum_{t=0}^T \nabla_\theta
 
 如何估计A呢? 可以建立一个Q network和一个V network分别估计Q和V然后相减得到A, 但这样会增加bias
 
-N步Q值函数估计, 不用单独的网络来估计Q.
+#### N步Q值函数估计, 不用单独的网络来估计Q.
 
 * 利用经验Q值估计, 也就是前面的方法, 特点是低偏差,高方差
 $$ Q^\pi(s_t, a_t) = E[r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + ... + \gamma^T r_T ]$$
@@ -479,4 +479,21 @@ $$ Q^\pi(s_t, a_t) = E[r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + ... + \gamma^n 
 * 1步估计, 特点是接近baseline的V值估计, 高偏差,低方差
 $$ Q^\pi(s_t, a_t) = E[r_t + \gamma r_{t+1} + \gamma^n V(s_{t+1}) ]$$
 
+### A3C 算法
+
+Asynchronous Advantage Actor Critic算法.
+
+* 采用5步Q值估计计算Advantage的方法
+* 再Actor网络和Critic网络之间共享参数
+* 同时再多份环境的copy中执行
+* 单个环境中的策略是用多个并行环境中所收集的经验数据来累积更新的
+* 异步执行的好处是不太需要replay memory.
+
+算法伪代码
+
+![A3C Pseudo algorithm]({{site.url}}/doc-images/reinforcement-learning/policy-gradient-05.png)
+
+
 ## 参考
+
+mircosoft course \<\<reinforcement learning explained\>\> on edx.org
