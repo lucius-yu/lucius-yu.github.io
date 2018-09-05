@@ -128,7 +128,7 @@ $$ \nabla_\theta J(\theta) = \frac{1}{m} \sum_{i=1}^m  \sum_{t=0}^T \nabla_\thet
 
 #### softmax 策略
 
-如前所述, $\pi_\theta (a_t|s_t)$ 为状态到动作的概率分布函数, 当动作为离散动作时, Softmax函数(或者是最后一层为softmax的神经网络)常被用来表示各动作的概率.
+如前所述, $\pi_\theta (a_t \vert s_t)$ 为状态到动作的概率分布函数, 当动作为离散动作时, Softmax函数(或者是最后一层为softmax的神经网络)常被用来表示各动作的概率.
 
 * 我们把行为看成是多个特征在一定权重下的线性代数和：
 $$ \phi (s,a)^T \theta $$
@@ -219,9 +219,9 @@ $$ \nabla_\theta J(\theta) = \frac{1}{m} \sum_{i=1}^m \sum_{t=0}^T \nabla_\theta
 
 基线的选择
 
-* 常量 $b=\frac{1}{m} \sum_{i=1}^m R(\tau^i)$ 
+* 常量 $b=\frac{1}{m} \sum_{i=1}^m R(\tau^i)$
 * 依赖与时间的 $b_t = \frac{1}{m} \sum_{i=1}^m \sum_{t^\prime=t}^T r_{t^\prime}^i$
-* 基于时间和状态的, $b_t(s_t) = E[\sum_{t^\prime=t}^T r_{t^\prime} | s_t]$ .
+* 基于时间和状态的, $b_t(s_t) = E[\sum_{t^\prime=t}^T r_{t^\prime} \vert s_t]$ .
 * 基于时间和状态的基线,实际就是在计算value function.
 $$ V^\pi(s_t) = E_\pi[r_t+r_{t+1}+...+r_T | s_t]$$
 
