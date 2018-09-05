@@ -109,9 +109,11 @@ $$ \nabla_\theta J(\theta) = \frac{1}{m} \sum_{i=1}^m \nabla_\theta logP(\tau^i;
 
 * 第一步分解很简单, 回合出现的概率为, 根据策略计算时刻t时的状态下采取各动作的概率 $\pi_\theta (a_t | s_t)$ 和时刻t时,状态s与动作a组合后下一个状态的的概率分布 $P(s_{t+1} | s_t, a_t)$
 
-$$ \nabla_\theta logP(\tau; \theta) = \nabla_\theta log(\prod_{t=0}^T P(s_{t+1} \vert s_t, a_t) \pi_\theta (a_t | s_t)) $$
-$$ = \nabla_\theta [\sum_{t=0}^T logP(s_{t+1} | s_t, a_t) + \sum_{t=0}^T log\pi_\theta (a_t | s_t)] $$
-$$ = \nabla_\theta \sum_{t=0}^T logP(s_{t+1} | s_t, a_t) + \nabla_\theta \sum_{t=0}^T log\pi_\theta (a_t | s_t) $$
+$$ \begin{aligned}
+\nabla_\theta logP(\tau; \theta) = \nabla_\theta log(\prod_{t=0}^T P(s_{t+1} \vert s_t, a_t) \pi_\theta (a_t | s_t)) \\
+= \nabla_\theta [\sum_{t=0}^T logP(s_{t+1} | s_t, a_t) + \sum_{t=0}^T log\pi_\theta (a_t | s_t)] \\
+= \nabla_\theta \sum_{t=0}^T logP(s_{t+1} | s_t, a_t) + \nabla_\theta \sum_{t=0}^T log\pi_\theta (a_t | s_t) 
+\end{aligned}$$
 
 * 第一项中不含有参数 $\theta$, 求导后为0, 同时可以看出优化目标的梯度仅与策略相关,与模型无关
 
