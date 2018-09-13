@@ -476,15 +476,17 @@ $$ \nabla_\theta J(\theta) = \frac{1}{m} \sum_{i=1}^m \sum_{t=0}^T \nabla_\theta
 $$ Q^\pi(s_t, a_t) = E[r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + ... + \gamma^T r_T ]$$
 * n步Q值估计, 介于纯粹的V值估计和经验估计之间, n步之后是用baseline的V值估计, n步之内是用经验估计, 特点是中偏差,中方差.
 $$ Q^\pi(s_t, a_t) = E[r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + ... + \gamma^n V(s_{t+n}) ]$$
-* 1步估计, 特点是接近baseline的V值估计, 高偏差,低方差
-$$ Q^\pi(s_t, a_t) = E[r_t + \gamma r_{t+1} + \gamma^n V(s_{t+1}) ]$$
+* 2步估计, 中偏差,中方差
+$$ Q^\pi(s_t, a_t) = E[r_t + \gamma r_{t+1} + \gamma^2 V(s_{t+2}) ]$$
+* 1步估计, 特点是接近baseline的V值估计, 低偏差,高方差
+$$ Q^\pi(s_t, a_t) = E[r_t + \gamma V(s_{t+1}) ]$$
 
 ### A3C 算法
 
 Asynchronous Advantage Actor Critic算法.
 
 * 采用5步Q值估计计算Advantage的方法
-* 再Actor网络和Critic网络之间共享参数
+* 在Actor网络和Critic网络之间共享参数
 * 同时再多份环境的copy中执行
 * 单个环境中的策略是用多个并行环境中所收集的经验数据来累积更新的
 * 异步执行的好处是不太需要replay memory.
@@ -493,6 +495,33 @@ Asynchronous Advantage Actor Critic算法.
 
 ![A3C Pseudo algorithm]({{site.url}}/doc-images/reinforcement-learning/policy-gradient-05.png)
 
+n步Q值估计代码
+```
+# TODO: Create a function that returns an array of n-step targets, one for each timestep:
+# target[t] = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + ... + \gamma^n V(s_{t+n})
+# Where r_t is given by episode reward (epr) and V(s_n) is given by the baselines.
+def compute_n_step_targets(epr, baselines, gamma=0.999, n=15):
+    """ Computes a n_step target value. """
+    n_step_targets = np.zeros_like(epr)
+
+    ## Code here
+    ## target[t] = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + ... + \gamma^n V(s_{t+n})
+    for t_start in range(len(epr)):
+        # backward calculation
+        t_end = min(t_start+n,len(baselines)-1)
+        R = baselines[t_end]
+        for t in range(t_end-1, t_start-1, -1):
+            R = epr[t]+gamma*R
+        n_step_targets[t_start]=R
+
+    return n_step_targets
+```
+
+Actor-Critic n步Q值估计的性能
+
+![n_step_actic_critic_cartpole]({{site.url}}/doc-images/reinforcement-learning/policy-gradient-06.png)
+
+可以看出, 仍然需要500回合左右才能稳定得到运行200步的最大奖励, 但是方差进一步从带基线的REINFORCE算法的1000多降低到70左右
 
 ## 参考
 
