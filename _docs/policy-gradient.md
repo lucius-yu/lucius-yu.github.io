@@ -523,6 +523,30 @@ Actor-Critic n步Q值估计的性能
 
 可以看出, 仍然需要500回合左右才能稳定得到运行200步的最大奖励, 但是方差进一步从带基线的REINFORCE算法的1000多降低到70左右
 
+### TRPO和PPO
+
+在策略梯度算法中, 很多问题具有特征 1. reward稀疏, 2. target不固定，而是采样得到。在学习过程中容易“步子迈太大，容易扯着蛋”, 也就是学习的更新步长不好搞, 有个思路是用额外约束条件来限制策略更新, 使更新前后的策略不要相差太大.
+
+TRPO直接约束: 更新前后两个策略的 KL 距离不超过一定阈值. 约束优化问题. 在TRPO中使使用拟牛顿法的conjugate gradient求近似解的，需要求KL divergence这个constraint的二次导.
+
+PPO主要的改进是简化TRPO的优化方法. 避免求二次导, 直接把新旧策略的KL距离做在loss函数里.
+
+对于优化问题, 一步到位的求解析解的优化, 无约束时一阶导数等于0求解, 等式约束时拉格朗日乘子法, 不等式约束时要用到KKT条件.
+
+在监督学习中常见的带正则项的代价函数,例如lasso和ridge回归, 在原有的代价函数(例如回归问题时的最小均方差)上,在加上一阶或者二阶的惩罚项, $\lambda |w|$ . w为模型系数. 来达到既能优化最小均方差,同时又能满足某些条件.
+
+同理, 在策略梯度优化时, PPO额外加了一个惩罚项,其正比于新旧策略的KL距离.
+
+PPO算法伪码
+
+![PPO Pseudo algorithm]({{site.url}}/doc-images/reinforcement-learning/policy-gradient-07.png)
+
+DPPO就是分布式的PPO
+
+在Deepmind的DPPO文章中,除了用KL散度做额外的惩罚,也可以用clip的版本,据称效果更好.
+
+
+
 ## 参考
 
 mircosoft course \<\<reinforcement learning explained\>\> on edx.org
