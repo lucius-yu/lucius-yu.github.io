@@ -26,11 +26,11 @@ https://minasidor.transportstyrelsen.se/secure/vehicleregister.aspx
 
 然后选择'Stall av ditt fordon' 就是设定off road,从当天开始.
 
-![Set your car off road]]({{ site.url}}/post-images/set-car-off-road/set-car-off-road.PNG)
+![Set your car off road]({{site.url}}/post-images/set-car-off-road/set-car-off-road.PNG)
 
 需要恢复使用时, 登录网站后选择'Stall pa ditt fordon'. 可以提前最多90天设定
 
-![Set your car on road]]]({{ site.url}}/post-images/set-car-off-road/set-car-on-road.PNG)
+![Set your car on road]({{site.url}}/post-images/set-car-off-road/set-car-on-road.PNG)
 
 
 ## 参考
