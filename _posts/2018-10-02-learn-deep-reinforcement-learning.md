@@ -41,4 +41,4 @@ date: 2018-10-02 12:24:30 +0000
 https://zhimap.com/mhtml/4826024f377845feb463a6981c2a4efa
 
 
-
+https://simoninithomas.github.io/Deep_reinforcement_learning_Course/
