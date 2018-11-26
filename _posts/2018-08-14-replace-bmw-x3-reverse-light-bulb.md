@@ -37,6 +37,15 @@ date: 2018-08-14 09:57:26 +0100
 
 ![remove bulb 4]({{ site.url}}/post-images/replace-bmw-x3-reverse-light-bulb/remove-bulb-04.png)
 
+上面的第三和第四幅图片和实际情况是有差异的. 在取下灯泡的时候,我将透明的一个小塑料底座也取了下来, 灯泡在装上的时候是被夹住的. 所以我感觉取灯泡时,可以直接把灯泡拔下来. 
+
+![remove bulb 5]({{ site.url}}/post-images/replace-bmw-x3-reverse-light-bulb/remove-bulb-05.png)
+
+在取下灯泡座是, 有一个黑色的卡子, 按住卡子可以轻松的取下灯泡座, 拔出两个连接的电源线可以将灯泡座全部拆下(不是必要的), 同时下图中另一个画红圈的地方, 在里面是夹住灯泡的夹子
+
+![remove bulb 6]({{ site.url}}/post-images/replace-bmw-x3-reverse-light-bulb/remove-bulb-06.png)
+
+
 4. 装上新灯泡
 
 ![insert bulb]({{ site.url}}/post-images/replace-bmw-x3-reverse-light-bulb/insert-bulb.png)
