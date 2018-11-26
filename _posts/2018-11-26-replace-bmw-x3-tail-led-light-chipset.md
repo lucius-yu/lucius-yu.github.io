@@ -23,7 +23,7 @@ date: 2018-11-26 14:57:26 +0100
 
 1. 取下盖板. 
 
-![Remove Panel]({{ site.url}}/post-images/replace-bmw-x3-tail-led-light-chipset/buy-chipset.png)
+![Remove Panel]({{ site.url}}/post-images/replace-bmw-x3-tail-led-light-chipset/remove-panel.png)
 
 2. 拆下螺钉,取下整个灯罩.
 
